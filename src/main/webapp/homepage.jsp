@@ -1,5 +1,4 @@
-<%@ page import="fr.fisa.javaweb.beans.Specialite" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -80,44 +79,16 @@
     <section id="breadcrumbs" class="breadcrumbs">
         <div class="container">
             <br>
-            <h2>Inscription d'étudiant</h2>
+            <h2>Accueil</h2>
 
         </div>
     </section><!-- End Breadcrumbs -->
 
     <section class="inner-page">
-        <div class="container d-flex justify-content-center login-register-form">
-            <div class=" col-md-4 flex-column justify-content-center">
-                <img src="assets/img/student.png" class="col-12 d-flex justify-content-center">
-                <form class="row g-3 " method="post" novalidate>
-                    <div class="">
-                        <label for="nom" class="form-label">Nom de l'étudiant</label>
-                        <input type="text" class="form-control " id="nom" name="nom" required>
-                    </div>
-
-                    <div class="">
-                        <label for="prenom" class="form-label">Prenom</label>
-                        <input type="text" class="form-control" id="prenom" name="prenom" required>
-                    </div>
-                    <div class="">
-                        <label for="INE" class="form-label">INE</label>
-                        <input type="text" class="form-control" id="INE" name="INE" required>
-                    </div>
-                    <div class="">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" name="password" id="password" required>
-                    </div>
-                    <select name="specialite" class="form-select" >
-<%--                        <option selected>Sélectionner la spécialité</option>--%>
-                        <%for( Specialite specialite : Specialite.values()){%>
-                        <option value="<%=specialite%>"><%=specialite%></option>
-                        <% }%>
-                    </select>
-                    <div class="d-flex justify-content-center">
-                        <input class="btn btn-primary" type="submit" formaction="home">Inscrire étudiant</input>
-                    </div>
-                </form>
-            </div>
+        <div class="container">
+            <h1>Hello World! Tout le monde</h1>
+            <br/>
+            <a href="hello-servlet">Hello Servlet</a>
         </div>
     </section>
 
@@ -156,9 +127,9 @@
                 </div>
 
                 <div class="col-lg-3 col-md-6 footer-links">
-                    <h4>Liens utiles</h4>
+                    <h4>Useful Links</h4>
                     <ul>
-                        <li><i class="bx bx-chevron-right"></i> <a href="index.jsp">Accueil</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="#">Home</a></li>
                         <li><i class="bx bx-chevron-right"></i> <a href="#">Notes</a></li>
                         <li><i class="bx bx-chevron-right"></i> <a href="#">Évaluations</a></li>
                         <li><i class="bx bx-chevron-right"></i> <a href="#">Conditions</a></li>
