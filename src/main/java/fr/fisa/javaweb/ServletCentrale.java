@@ -2,6 +2,7 @@ package fr.fisa.javaweb;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 
 import fr.fisa.javaweb.beans.Administrateur;
@@ -70,11 +71,17 @@ public class ServletCentrale extends HttpServlet {
         out.println("<html><body>");
         switch (referer){
             case "inscription.jsp":
-                out.println("<h1>OK "+request.getParameter("nom")+"</h1>");
+                out.println("<h1>OK "+request.getParameter("nom")+
+                        request.getParameter("prenom")+
+                        request.getParameter("INE")+
+                        request.getParameter("password")+
+                        request.getParameter("specialite")+ "</h1>");
                 break;
             default:
-                out.println("<h1>" + referer
-                        + "</h1>");
+                for (Etudiant etudiant : this.listeEtudiants){
+                    out.println("<h1>" + etudiant.getName() + "</h1>");
+
+                }
 
         }
         out.println("</body></html>");
@@ -82,7 +89,7 @@ public class ServletCentrale extends HttpServlet {
     }
 
     @Override
-    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
         String[] referers = request.getHeader("referer").split("/");
         String referer = referers[referers.length-1];
@@ -90,7 +97,17 @@ public class ServletCentrale extends HttpServlet {
         out.println("<html><body>");
         switch (referer){
             case "inscription.jsp":
-                out.println("<h1>OK "+request.getParameter("nom")+"</h1>");
+                if(!Objects.equals(request.getParameter("prenom"), "")
+                && !Objects.equals(request.getParameter("INE"), "")
+                && !Objects.equals(request.getParameter("password"), "")){
+                    Etudiant etudiant = new Etudiant(request.getParameter("nom"),
+                            request.getParameter("prenom"),
+                            request.getParameter("INE"),
+                            Specialite.valueOf(request.getParameter("specialite")),
+                            request.getParameter("password"));
+                    this.listeEtudiants.add(etudiant);
+                }
+                response.sendRedirect("index.jsp");
                 break;
             default:
                 out.println("<h1>" + referer
