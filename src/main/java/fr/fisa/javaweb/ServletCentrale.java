@@ -119,6 +119,7 @@ public class ServletCentrale extends HttpServlet {
             case "specialite.jsp":
                 String specialite = request.getParameter("specialite");
                 ArrayList<Etudiant> etudiantTri = new ArrayList<>();
+                System.out.println(specialite);
                 for (int i=0; i<listeEtudiants.size();i++){
                     if (listeEtudiants.get(i).getSpecialite().equals(specialite)){
                         etudiantTri.add(listeEtudiants.get(i));
