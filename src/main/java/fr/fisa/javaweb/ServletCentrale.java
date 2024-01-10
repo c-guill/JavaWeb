@@ -60,12 +60,12 @@ public class ServletCentrale extends HttpServlet {
             listeEtudiants.add(etudiant);
             listeUser.add(etudiant);
         }
-        for (int i = 0; i < 3; i++){
-            int aleaPrenom = new Random().nextInt(prenoms.length);
-            int aleaNom = new Random().nextInt(prenoms.length);
-            Administrateur admin = new Administrateur(prenoms[aleaPrenom],prenoms[aleaNom],"1234");
-            listeUser.add(admin);
-        }
+        Administrateur admin = new Administrateur("Bob","Bob","1234");
+        Administrateur admin2 = new Administrateur("Guarim","raphael","1234");
+        Administrateur admin3 = new Administrateur("Mesrine","Jacques","1234");
+        listeUser.add(admin);
+        listeUser.add(admin2);
+        listeUser.add(admin3);
 
     }
 
