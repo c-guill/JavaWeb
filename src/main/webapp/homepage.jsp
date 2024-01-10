@@ -74,49 +74,21 @@
 </header><!-- End Header -->
 
 <main id="main">
+
     <!-- ======= Breadcrumbs ======= -->
     <section id="breadcrumbs" class="breadcrumbs">
         <div class="container">
             <br>
-            <h2>Authentification - Se Connecter</h2>
+            <h2>Accueil</h2>
 
         </div>
     </section><!-- End Breadcrumbs -->
 
     <section class="inner-page">
-        <div class="container d-flex justify-content-center login-register-form">
-            <div class=" col-md-4 flex-column justify-content-center">
-                <img src="assets/img/identification.png" class="col-12 d-flex justify-content-center">
-                <form class="row g-3 " novalidate>
-                    <div class="">
-                        <label for="email" class="form-label">Adresse Email</label>
-                        <input type="email" class="form-control " id="email" aria-describedby="emailHelp" required>
-                        <div class="valid-feedback">
-                            Looks good!
-                        </div>
-                        <div class="invalid-feedback">
-                            Email incorrect.
-                        </div>
-                    </div>
-
-                    <div class="">
-                        <label for="password" class="form-label">Mot de passe</label>
-                        <input type="password" class="form-control " id="password" required>
-                        <div class="valid-feedback">
-                            C'est bon!
-                        </div>
-
-                        <div class="invalid-feedback">
-                            Mauvaise mot de passe!
-                        </div>
-                    </div>
-
-                    <div class="d-flex justify-content-center">
-                        <button class="btn btn-primary" type="button" onclick="">Se Connecter</button>
-                    </div>
-                    <p style="place-content: center; display: flex">Nouveau à INSA-Stu?<a href="/register">&nbsp;Créer un compte maintenant.</a></p>
-                </form>
-            </div>
+        <div class="container">
+            <h1>Hello World! Tout le monde</h1>
+            <br/>
+            <a href="hello-servlet">Hello Servlet</a>
         </div>
     </section>
 
@@ -155,9 +127,9 @@
                 </div>
 
                 <div class="col-lg-3 col-md-6 footer-links">
-                    <h4>Liens utiles</h4>
+                    <h4>Useful Links</h4>
                     <ul>
-                        <li><i class="bx bx-chevron-right"></i> <a href="index.jsp">Accueil</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="#">Home</a></li>
                         <li><i class="bx bx-chevron-right"></i> <a href="#">Notes</a></li>
                         <li><i class="bx bx-chevron-right"></i> <a href="#">Évaluations</a></li>
                         <li><i class="bx bx-chevron-right"></i> <a href="#">Conditions</a></li>

@@ -1,3 +1,4 @@
+<%@ page import="fr.fisa.javaweb.beans.Specialite" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -74,11 +75,12 @@
 </header><!-- End Header -->
 
 <main id="main">
+
     <!-- ======= Breadcrumbs ======= -->
     <section id="breadcrumbs" class="breadcrumbs">
         <div class="container">
             <br>
-            <h2>Authentification - Se Connecter</h2>
+            <h2>Saisir la note d'étudiant</h2>
 
         </div>
     </section><!-- End Breadcrumbs -->
@@ -86,35 +88,34 @@
     <section class="inner-page">
         <div class="container d-flex justify-content-center login-register-form">
             <div class=" col-md-4 flex-column justify-content-center">
-                <img src="assets/img/identification.png" class="col-12 d-flex justify-content-center">
+                <img src="assets/img/Enter_data.png" class="col-12 d-flex justify-content-center">
                 <form class="row g-3 " novalidate>
                     <div class="">
-                        <label for="email" class="form-label">Adresse Email</label>
-                        <input type="email" class="form-control " id="email" aria-describedby="emailHelp" required>
-                        <div class="valid-feedback">
-                            Looks good!
-                        </div>
-                        <div class="invalid-feedback">
-                            Email incorrect.
-                        </div>
+                        <label for="nom" class="form-label">Nom de l'étudiant</label>
+                        <input type="text" class="form-control " id="nom" required>
                     </div>
 
                     <div class="">
-                        <label for="password" class="form-label">Mot de passe</label>
-                        <input type="password" class="form-control " id="password" required>
-                        <div class="valid-feedback">
-                            C'est bon!
-                        </div>
-
-                        <div class="invalid-feedback">
-                            Mauvaise mot de passe!
-                        </div>
+                        <label for="prenom" class="form-label">Prénom</label>
+                        <input type="text" class="form-control" id="prenom" required>
                     </div>
-
+                    <div class="">
+<%--                        <label for="nom-module" class="form-label">Nom de module</label>--%>
+                        <select class="form-select"  >
+                            <option selected>Sélectionner le module</option>
+                            <%session.getAttribute()
+                                for( Specialite specialite : Specialite.values()){%>
+                            <option value="<%=specialite%>"><%=specialite%></option>
+                            <% }%>
+                        </select>
+                    </div>
+                    <div class="">
+                        <label for="notes" class="form-label">Notes</label>
+                        <input type="number" class="form-control" id="notes" required>
+                    </div>
                     <div class="d-flex justify-content-center">
-                        <button class="btn btn-primary" type="button" onclick="">Se Connecter</button>
+                        <button class="btn btn-primary" type="button">Entrer notes d'étudiant</button>
                     </div>
-                    <p style="place-content: center; display: flex">Nouveau à INSA-Stu?<a href="/register">&nbsp;Créer un compte maintenant.</a></p>
                 </form>
             </div>
         </div>
