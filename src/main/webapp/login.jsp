@@ -19,31 +19,27 @@
     <h2>Sign in</h2>
 </div>
 
+<h1>Liste des étudiants :</h1>
+
+
+
+<c:forEach var="etudiant" items="${servletCentrale.listeEtudiants}">
+    <p>${etudiant.nom} ${etudiant.prenom} - ${etudiant.specialite}</p>
+</c:forEach>
+
 <div class="container d-flex justify-content-center login-register-form">
     <div class=" col-md-4 flex-column justify-content-center">
-        <img src="" alt="?">
+        <img src="assets/img/identification.png" alt="?">
         <form class="row g-3 " novalidate>
             <div class="">
                 <label for="email" class="form-label">Email address</label>
                 <input type="email" class="form-control " id="email" aria-describedby="emailHelp" required>
-                <div class="valid-feedback">
-                    Looks good!
-                </div>
-                <div class="invalid-feedback">
-                    Email incorrect.
-                </div>
+
             </div>
 
             <div class="">
                 <label for="password" class="form-label">Password</label>
                 <input type="password" class="form-control " id="password" required>
-                <div class="valid-feedback">
-                    Looks good!
-                </div>
-
-                <div class="invalid-feedback">
-                    Wrong password.
-                </div>
             </div>
 
             <div class="d-flex justify-content-center">
@@ -52,6 +48,7 @@
             <p style="place-content: center; display: flex">New to INSA ?<a href="/register">Create an account now.</a></p>
         </form>
     </div>
+    
 </div>
 </body>
 </html>
