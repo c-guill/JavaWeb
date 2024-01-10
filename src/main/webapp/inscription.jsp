@@ -89,32 +89,32 @@
         <div class="container d-flex justify-content-center login-register-form">
             <div class=" col-md-4 flex-column justify-content-center">
                 <img src="assets/img/student.png" class="col-12 d-flex justify-content-center">
-                <form class="row g-3 " novalidate>
+                <form class="row g-3 " method="post" novalidate>
                     <div class="">
                         <label for="nom" class="form-label">Nom de l'étudiant</label>
-                        <input type="text" class="form-control " id="nom" required>
+                        <input type="text" class="form-control " id="nom" name="nom" required>
                     </div>
 
                     <div class="">
                         <label for="prenom" class="form-label">Prenom</label>
-                        <input type="text" class="form-control" id="prenom" required>
+                        <input type="text" class="form-control" id="prenom" name="prenom" required>
                     </div>
                     <div class="">
                         <label for="INE" class="form-label">INE</label>
-                        <input type="text" class="form-control" id="INE" required>
+                        <input type="text" class="form-control" id="INE" name="INE" required>
                     </div>
                     <div class="">
                         <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" required>
+                        <input type="password" class="form-control" name="password" id="password" required>
                     </div>
-                    <select class="form-select"  >
-                        <option selected>Sélectionner la spécialité</option>
+                    <select name="specialite" class="form-select" >
+<%--                        <option selected>Sélectionner la spécialité</option>--%>
                         <%for( Specialite specialite : Specialite.values()){%>
-                            <option value="<%=specialite%>"><%=specialite%></option>
+                        <option value="<%=specialite%>"><%=specialite%></option>
                         <% }%>
                     </select>
                     <div class="d-flex justify-content-center">
-                        <button class="btn btn-primary" type="button">Inscrire étudiant</button>
+                        <input class="btn btn-primary" type="submit" formaction="home">Inscrire étudiant</input>
                     </div>
                 </form>
             </div>

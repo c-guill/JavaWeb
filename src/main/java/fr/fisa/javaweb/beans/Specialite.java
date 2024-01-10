@@ -1,6 +1,30 @@
 package fr.fisa.javaweb.beans;
 
-public enum Specialite {
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
-    Informatique, Mathematique, GEII, Gestion, Economie, physique, Biologie;
+public class Specialite {
+
+    private String nom;
+    private ArrayList<Module> listeModule;
+
+    public Specialite(String nom){
+        this.nom=nom;
+        listeModule = new ArrayList<>();
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public void addmodule(Module mod){
+        listeModule.add(mod);
+    }
+    public ArrayList<Module> getListeModule() {
+        return listeModule;
+    }
 }

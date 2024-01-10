@@ -100,14 +100,8 @@
                         <input type="text" class="form-control" id="prenom" required>
                     </div>
                     <div class="">
-<%--                        <label for="nom-module" class="form-label">Nom de module</label>--%>
-                        <select class="form-select"  >
-                            <option selected>Sélectionner le module</option>
-                            <%session.getAttribute()
-                                for( Specialite specialite : Specialite.values()){%>
-                            <option value="<%=specialite%>"><%=specialite%></option>
-                            <% }%>
-                        </select>
+                        <label for="nom-module" class="form-label">Nom de module</label>
+                        <input type="text" class="form-control" id="nom-module" required>
                     </div>
                     <div class="">
                         <label for="notes" class="form-label">Notes</label>
