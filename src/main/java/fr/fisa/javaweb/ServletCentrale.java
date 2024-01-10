@@ -103,7 +103,7 @@ public class ServletCentrale extends HttpServlet {
                     Etudiant etudiant = new Etudiant(request.getParameter("nom"),
                             request.getParameter("prenom"),
                             request.getParameter("INE"),
-                            Specialite.valueOf(request.getParameter("specialite")),
+                            /*Specialite.valueOf(request.getParameter("specialite"))*/this.listeSpecialite.get(0),
                             request.getParameter("password"));
                     this.listeEtudiants.add(etudiant);
                 }
