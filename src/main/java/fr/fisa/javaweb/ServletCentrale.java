@@ -6,6 +6,7 @@ import java.util.Random;
 
 import fr.fisa.javaweb.beans.Administrateur;
 import fr.fisa.javaweb.beans.Etudiant;
+import fr.fisa.javaweb.beans.Module;
 import fr.fisa.javaweb.beans.Specialite;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletContext;
@@ -17,6 +18,7 @@ import jakarta.servlet.annotation.*;
 public class ServletCentrale extends HttpServlet {
     private String message;
     private ArrayList<Etudiant> listeEtudiants;
+    private ArrayList<Module> listeModule;
 
     public void init() {
         // Etudiant
@@ -28,6 +30,16 @@ public class ServletCentrale extends HttpServlet {
                 "Paul", "Quinn", "Ryan", "Sophia", "Tyler"
         };
         listeEtudiants = new ArrayList<>();
+        listeModule = new ArrayList<>();
+        listeModule.add(new Module("Francais"));
+        listeModule.add(new Module("Anglais"));
+        listeModule.add(new Module("Java Web"));
+        listeModule.add(new Module("Php"));
+        listeModule.add(new Module("Droit"));
+        listeModule.add(new Module("Math"));
+        listeModule.add(new Module("Espagnol"));
+        listeModule.add(new Module("C++"));
+
         for (int i = 0; i < 10; i++){
             int aleaPrenom = new Random().nextInt(prenoms.length);
             int aleaNom = new Random().nextInt(prenoms.length);
@@ -35,6 +47,7 @@ public class ServletCentrale extends HttpServlet {
             Etudiant etudiant = new Etudiant(prenoms[aleaPrenom],prenoms[aleaNom],prenoms[aleaPrenom],Specialite.values()[alea],String.valueOf(i));
             listeEtudiants.add(etudiant);
         }
+
 
     }
 
