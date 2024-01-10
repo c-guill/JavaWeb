@@ -38,11 +38,42 @@ public class ServletCentrale extends HttpServlet {
 
     }
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("text/html");
+        String[] referers = request.getHeader("referer").split("/");
+        String referer = referers[referers.length-1];
+        PrintWriter out = response.getWriter();
+        out.println("<html><body>");
+        switch (referer){
+            case "inscription.jsp":
+                out.println("<h1>OK "+request.getParameter("nom")+"</h1>");
+                break;
+            default:
+                out.println("<h1>" + referer
+                        + "</h1>");
 
+        }
+        out.println("</body></html>");
 
-        response.sendRedirect("login.jsp");
+    }
 
+    @Override
+    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/html");
+        String[] referers = request.getHeader("referer").split("/");
+        String referer = referers[referers.length-1];
+        PrintWriter out = response.getWriter();
+        out.println("<html><body>");
+        switch (referer){
+            case "inscription.jsp":
+                out.println("<h1>OK "+request.getParameter("nom")+"</h1>");
+                break;
+            default:
+                out.println("<h1>" + referer
+                        + "</h1>");
+
+        }
+        out.println("</body></html>");
     }
 
 
