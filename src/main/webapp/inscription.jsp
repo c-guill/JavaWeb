@@ -16,10 +16,10 @@
         <div class="container d-flex justify-content-center login-register-form">
             <div class=" col-md-4 flex-column justify-content-center">
                 <img src="assets/img/student.png" class="col-12 d-flex justify-content-center">
-                <form class="row g-3 " novalidate>
+                <form class="row g-3 " method="post" novalidate>
                     <div class="">
                         <label for="nom" class="form-label">Nom de l'étudiant</label>
-                        <input type="text" class="form-control " id="nom" required>
+                        <input type="text" class="form-control " name="nom" id="nom" required>
                     </div>
 
                     <div class="">
@@ -42,7 +42,7 @@
                         <% }%>
                     </select>
                     <div class="d-flex justify-content-center">
-                        <button class="btn btn-primary" type="button">Inscrire étudiant</button>
+                        <input class="btn btn-primary" type="submit" formaction="hello-servlet">Inscrire étudiant</input>
                     </div>
                 </form>
             </div>
