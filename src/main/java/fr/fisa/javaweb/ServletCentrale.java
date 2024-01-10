@@ -8,7 +8,9 @@ import java.util.Random;
 import fr.fisa.javaweb.beans.Administrateur;
 import fr.fisa.javaweb.beans.Etudiant;
 import fr.fisa.javaweb.beans.Module;
+import fr.fisa.javaweb.beans.Administrateur;
 import fr.fisa.javaweb.beans.Specialite;
+import fr.fisa.javaweb.beans.User;
 import fr.fisa.javaweb.beans.Tuple;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletContext;
@@ -21,6 +23,7 @@ public class ServletCentrale extends HttpServlet {
     private String message;
     private ArrayList<Etudiant> listeEtudiants;
     private ArrayList<Specialite> listeSpecialite;
+    private ArrayList<User> listeUser;
 
     public void init() {
 
@@ -38,6 +41,7 @@ public class ServletCentrale extends HttpServlet {
             listeSpecialite.get(i).addmodule(new Module("Droit"));
         }
 
+        listeUser = new ArrayList<>();
         // Etudiant
 
         String[] prenoms = {
@@ -48,18 +52,20 @@ public class ServletCentrale extends HttpServlet {
         };
         listeEtudiants = new ArrayList<>();
 
-
         for (int i = 0; i < 10; i++){
             int aleaPrenom = new Random().nextInt(prenoms.length);
             int aleaNom = new Random().nextInt(prenoms.length);
             int alea = new Random().nextInt(listeSpecialite.size());
-            Etudiant etudiant = new Etudiant(prenoms[aleaPrenom],prenoms[aleaNom],prenoms[aleaPrenom],listeSpecialite.get(alea),String.valueOf(i));
+            Etudiant etudiant = new Etudiant(prenoms[aleaNom],prenoms[aleaPrenom],prenoms[aleaPrenom],listeSpecialite.get(alea),String.valueOf(i));
             listeEtudiants.add(etudiant);
+            listeUser.add(etudiant);
         }
-
-
-
-
+        for (int i = 0; i < 3; i++){
+            int aleaPrenom = new Random().nextInt(prenoms.length);
+            int aleaNom = new Random().nextInt(prenoms.length);
+            Administrateur admin = new Administrateur(prenoms[aleaPrenom],prenoms[aleaNom],"1234");
+            listeUser.add(admin);
+        }
 
     }
 
@@ -109,6 +115,15 @@ public class ServletCentrale extends HttpServlet {
                 }
                 response.sendRedirect("index.jsp");
                 break;
+            case "specialite.jsp":
+                String specialite = request.getParameter("specialite");
+                ArrayList<Etudiant> etudiantTri = new ArrayList<>();
+                for (int i=0; i<listeEtudiants.size();i++){
+                    if (listeEtudiants.get(i).getSpecialite().equals(specialite)){
+                        etudiantTri.add(listeEtudiants.get(i));
+                    }
+                }
+                response.sendRedirect("specialite.jsp");
             default:
                 out.println("<h1>" + referer
                         + "</h1>");
