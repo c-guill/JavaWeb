@@ -57,10 +57,6 @@ public class ServletCentrale extends HttpServlet {
             listeEtudiants.add(etudiant);
         }
 
-
-
-
-
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -69,7 +65,7 @@ public class ServletCentrale extends HttpServlet {
         String referer = referers[referers.length-1];
         PrintWriter out = response.getWriter();
         out.println("<html><body>");
-        switch (referer){
+        switch (referer) {
             case "inscription.jsp":
                 out.println("<h1>OK "+request.getParameter("nom")+
                         request.getParameter("prenom")+
@@ -103,7 +99,8 @@ public class ServletCentrale extends HttpServlet {
                     Etudiant etudiant = new Etudiant(request.getParameter("nom"),
                             request.getParameter("prenom"),
                             request.getParameter("INE"),
-                            /*Specialite.valueOf(request.getParameter("specialite"))*/this.listeSpecialite.get(0),
+                            //Specialite.valueOf(request.getParameter("specialite")),
+                            this.listeSpecialite.get(0),
                             request.getParameter("password"));
                     this.listeEtudiants.add(etudiant);
                 }
@@ -116,8 +113,6 @@ public class ServletCentrale extends HttpServlet {
         }
         out.println("</body></html>");
     }
-
-
 
     public void destroy() {
     }
