@@ -37,15 +37,15 @@
 <header id="header" class="fixed-top header-inner-pages">
     <div class="container d-flex align-items-center">
 
-        <h1 class="logo me-auto"><a href="index.jsp">INSA-Stu</a></h1>
+        <h1 class="logo me-auto"><a href="homepage.jsp">INSA-Stu</a></h1>
         <!-- Uncomment below if you prefer to use an image logo -->
         <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
 
         <nav id="navbar" class="navbar">
             <ul>
-                <li><a class="nav-link scrollto " href="index.jsp">Accueil</a></li>
-                <li><a class="nav-link scrollto" href="studentNotes.jsp">Notes</a></li>
-                <li><a class="nav-link scrollto" href="inscription.jsp">Inscriptions</a></li>
+                <li><a class="nav-link scrollto " href="">Accueil</a></li>
+                <li><a class="nav-link scrollto" href="">Notes</a></li>
+                <li><a class="nav-link scrollto" href="">Inscriptions</a></li>
                 <li><a class="nav-link   scrollto" href="#portfolio">Portfolio</a></li>
                 <li><a class="nav-link scrollto" href="#team">Class</a></li>
                 <li class="dropdown"><a href="#"><span>Spécialités</span> <i class="bi bi-chevron-down"></i></a>
@@ -87,10 +87,10 @@
         <div class="container d-flex justify-content-center login-register-form">
             <div class=" col-md-4 flex-column justify-content-center">
                 <img src="assets/img/identification.png" class="col-12 d-flex justify-content-center">
-                <form class="row g-3 " novalidate>
+                <form class="row g-3 " method="post" novalidate>
                     <div class="">
-                        <label for="email" class="form-label">Adresse Email</label>
-                        <input type="email" class="form-control " id="email" aria-describedby="emailHelp" required>
+                        <label for="name" class="form-label">Nom d'utilisateur</label>
+                        <input type="text" class="form-control " id="name" name="name" aria-describedby="emailHelp" required>
                         <div class="valid-feedback">
                             Looks good!
                         </div>
@@ -101,7 +101,7 @@
 
                     <div class="">
                         <label for="password" class="form-label">Mot de passe</label>
-                        <input type="password" class="form-control " id="password" required>
+                        <input type="password" class="form-control " id="password" name="password" required>
                         <div class="valid-feedback">
                             C'est bon!
                         </div>
@@ -112,7 +112,7 @@
                     </div>
 
                     <div class="d-flex justify-content-center">
-                        <button class="btn btn-primary" type="button" onclick="">Se Connecter</button>
+                        <button class="btn btn-primary" type="submit" formaction="home">Se Connecter</button>
                     </div>
                     <p style="place-content: center; display: flex">Nouveau à INSA-Stu?<a href="/register">&nbsp;Créer un compte maintenant.</a></p>
                 </form>

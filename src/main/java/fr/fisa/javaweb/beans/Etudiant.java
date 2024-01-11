@@ -2,7 +2,7 @@ package fr.fisa.javaweb.beans;
 
 import java.util.HashMap;
 
-public class Etudiant extends User{
+public class Etudiant extends User {
 
     private Specialite specialite;
 

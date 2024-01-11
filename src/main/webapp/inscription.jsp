@@ -38,13 +38,13 @@
 <header id="header" class="fixed-top header-inner-pages">
     <div class="container d-flex align-items-center">
 
-        <h1 class="logo me-auto"><a href="index.jsp">INSA-Stu</a></h1>
+        <h1 class="logo me-auto"><a href="homepage.jsp">INSA-Stu</a></h1>
         <!-- Uncomment below if you prefer to use an image logo -->
         <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
 
         <nav id="navbar" class="navbar">
             <ul>
-                <li><a class="nav-link scrollto " href="index.jsp">Accueil</a></li>
+                <li><a class="nav-link scrollto " href="homepage.jsp">Accueil</a></li>
                 <li><a class="nav-link scrollto" href="studentNotes.jsp">Notes</a></li>
                 <li><a class="nav-link scrollto" href="inscription.jsp">Inscriptions</a></li>
                 <li><a class="nav-link   scrollto" href="#portfolio">Portfolio</a></li>
@@ -107,14 +107,18 @@
                         <label for="password" class="form-label">Password</label>
                         <input type="password" class="form-control" name="password" id="password" required>
                     </div>
+<%--                    <select name="specialite" class="form-select" >--%>
+<%--&lt;%&ndash;                        <option selected>Sélectionner la spécialité</option>&ndash;%&gt;--%>
+<%--                        <%for( Specialite specialite : Specialite.values()){%>--%>
+<%--                        <option value="<%=specialite%>"><%=specialite%></option>--%>
+<%--                        <% }%>--%>
+<%--                    </select>--%>
                     <select name="specialite" class="form-select" >
-<%--                        <option selected>Sélectionner la spécialité</option>--%>
-                        <%for( Specialite specialite : Specialite.values()){%>
-                        <option value="<%=specialite%>"><%=specialite%></option>
-                        <% }%>
+                        <option selected>Sélectionner la spécialité</option>
+                        <option value="Info">Info</option>
                     </select>
                     <div class="d-flex justify-content-center">
-                        <input class="btn btn-primary" type="submit" formaction="home">Inscrire étudiant</input>
+                        <input class="btn btn-primary" type="submit" formaction="home" value="Inscrire étudiant">
                     </div>
                 </form>
             </div>
