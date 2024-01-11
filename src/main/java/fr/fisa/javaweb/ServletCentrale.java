@@ -141,14 +141,19 @@ public class ServletCentrale extends HttpServlet {
                 response.sendRedirect("index.jsp");
                 break;
             case "specialite.jsp":
-                String specialite = request.getParameter("specialite");
+                Specialite specialite = listeSpecialite.get(Integer.parseInt(request.getParameter("specialite")));
                 ArrayList<Etudiant> etudiantTri = new ArrayList<>();
+                System.out.println(specialite.getNom());
                 for (int i=0; i<listeEtudiants.size();i++){
-                    if (listeEtudiants.get(i).getSpecialite().equals(specialite)){
+                    System.out.println("Test :"+listeEtudiants.get(i).getSpecialite().getNom()+" ---- "+specialite.getNom());
+                    if (listeEtudiants.get(i).getSpecialite().getNom().equals(specialite.getNom())){
+                        System.out.println("suuuu");
                         etudiantTri.add(listeEtudiants.get(i));
                     }
                 }
+                System.out.println(etudiantTri.size());
                 response.sendRedirect("specialite.jsp");
+                request.getSession().setAttribute("ListeEtudiantTri",etudiantTri);
                 break;
             case "hello.jsp":
                 out.println("<h1>" + referer + "</h1>");
