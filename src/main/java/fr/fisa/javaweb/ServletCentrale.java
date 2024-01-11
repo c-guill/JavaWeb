@@ -63,6 +63,7 @@ public class ServletCentrale extends HttpServlet {
         Etudiant etudiant = new Etudiant("jack","jack","1234",listeSpecialite.get(0),String.valueOf(1254));
         listeEtudiants.add(etudiant);
         listeUser.add(etudiant);
+        etudiant.getEvaluations().put(listeSpecialite.get(0).getListeModule().get(0), new Evaluation(50,50,50,"ok"));
         Administrateur admin = new Administrateur("bob","bob","1234");
         Administrateur admin2 = new Administrateur("Guarim","raphael","1234");
         Administrateur admin3 = new Administrateur("Mesrine","Jacques","1234");
@@ -180,6 +181,30 @@ public class ServletCentrale extends HttpServlet {
                 request.getSession().setAttribute("ListeEtudiantNote",etudiantNote);
                 request.getSession().setAttribute("ListeEtudiantID",this.listeEtudiants);
                 break;
+            case "analyse.jsp":
+                User user = (User) request.getSession().getAttribute("user");
+                ArrayList<Evaluation> evaluations = new ArrayList<>();
+                if(user instanceof Administrateur && !Objects.equals(request.getParameter("module"),"")){
+                    module = null;
+                    for (Module m : this.listeModule){
+                        if(m.getNom().equalsIgnoreCase(request.getParameter("module"))){
+                            module = m;
+                            break;
+                        }
+                    }
+                    if(module != null) {
+                        for (Etudiant etudiant : this.listeEtudiants) {
+                            for (Evaluation evaluation : etudiant.getEvaluations().values()){
+//                            if (etudiant.getEvaluations().containsKey(module)) {
+                                evaluations.add(evaluation);
+                            }
+                        }
+                    }
+                }
+                request.getSession().setAttribute("evaluations",evaluations);
+                response.sendRedirect("analyse.jsp");
+
+                break;
             case "hello.jsp":
                 out.println("<h1>" + referer + "</h1>");
                 break;
@@ -189,29 +214,29 @@ public class ServletCentrale extends HttpServlet {
                         && !Objects.equals(request.getParameter("time"), "")
                         && !Objects.equals(request.getParameter("commentaire"), "")
                         && !Objects.equals(request.getParameter("module"), "")){
-                    User user = (User) request.getSession().getAttribute("user");
-                    if(user instanceof Etudiant){
-                        int supports = Integer.parseInt(request.getParameter("supports"));
-                        int equipe = Integer.parseInt(request.getParameter("equipe"));
-                        int time = Integer.parseInt(request.getParameter("time"));
-                        if(supports < 0) supports = 0;
-                        if(equipe < 0) equipe = 0;
-                        if(time < 0) time = 0;
-                        if(supports > 100) supports = 100;
-                        if(equipe > 100) equipe = 100;
-                        if(time > 100) time = 100;
-                        Evaluation evaluation = new Evaluation(supports, equipe, time, request.getParameter("commentaire"));
-                        module = null;
-                        for (Module m : ((Etudiant) user).getSpecialite().getListeModule()){
-                            if(m.getNom().equalsIgnoreCase(request.getParameter("module"))){
-                                module = m;
-                                break;
+                        user = (User) request.getSession().getAttribute("user");
+                        if(user instanceof Etudiant){
+                            int supports = Integer.parseInt(request.getParameter("supports"));
+                            int equipe = Integer.parseInt(request.getParameter("equipe"));
+                            int time = Integer.parseInt(request.getParameter("time"));
+                            if(supports < 0) supports = 0;
+                            if(equipe < 0) equipe = 0;
+                            if(time < 0) time = 0;
+                            if(supports > 100) supports = 100;
+                            if(equipe > 100) equipe = 100;
+                            if(time > 100) time = 100;
+                            Evaluation evaluation = new Evaluation(supports, equipe, time, request.getParameter("commentaire"));
+                            module = null;
+                            for (Module m : ((Etudiant) user).getSpecialite().getListeModule()){
+                                if(m.getNom().equalsIgnoreCase(request.getParameter("module"))){
+                                    module = m;
+                                    break;
+                                }
+                            }
+                            if(module != null){
+                                ((Etudiant)user).getEvaluations().put(module, evaluation);
                             }
                         }
-                        if(module != null){
-                            ((Etudiant)user).getEvaluations().put(module, evaluation);
-                        }
-                    }
                 }
                 response.sendRedirect("homepage.jsp");
                 break;
@@ -250,9 +275,9 @@ public class ServletCentrale extends HttpServlet {
                 String name = request.getParameter("name");
                 String password = request.getParameter("password");
                 User authentificatedUser = null;
-                for (User user : listeUser) {
-                    if (user.getName().equals(name) && user.getPassword().equals(password)) {
-                        authentificatedUser = user;
+                for (User u : listeUser) {
+                    if (u.getName().equals(name) && u.getPassword().equals(password)) {
+                        authentificatedUser = u;
                         break;
                     }
                 }
