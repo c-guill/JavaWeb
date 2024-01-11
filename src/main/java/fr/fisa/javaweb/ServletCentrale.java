@@ -5,13 +5,9 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 
+import fr.fisa.javaweb.beans.*;
 import fr.fisa.javaweb.beans.Administrateur;
-import fr.fisa.javaweb.beans.Etudiant;
 import fr.fisa.javaweb.beans.Module;
-import fr.fisa.javaweb.beans.Administrateur;
-import fr.fisa.javaweb.beans.Specialite;
-import fr.fisa.javaweb.beans.User;
-import fr.fisa.javaweb.beans.Tuple;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
@@ -43,7 +39,7 @@ public class ServletCentrale extends HttpServlet {
         listeUser = new ArrayList<>();
         // Etudiant
         String[] prenoms = {
-                "Alice", "Bob", "Charlie", "David", "Emma",
+                "Alice", "Charlie", "David", "Emma",
                 "Frank", "Grace", "Hank", "Ivy", "Jack",
                 "Kate", "Liam", "Mia", "Noah", "Olivia",
                 "Paul", "Quinn", "Ryan", "Sophia", "Tyler"
@@ -58,6 +54,9 @@ public class ServletCentrale extends HttpServlet {
             listeEtudiants.add(etudiant);
             listeUser.add(etudiant);
         }
+        Etudiant etudiant = new Etudiant("jack","jack","1234",listeSpecialite.get(0),String.valueOf(1254));
+        listeEtudiants.add(etudiant);
+        listeUser.add(etudiant);
         Administrateur admin = new Administrateur("bob","bob","1234");
         Administrateur admin2 = new Administrateur("Guarim","raphael","1234");
         Administrateur admin3 = new Administrateur("Mesrine","Jacques","1234");
@@ -93,6 +92,16 @@ public class ServletCentrale extends HttpServlet {
 
                 for (Specialite s : (ArrayList<Specialite>) request.getSession().getAttribute("specialite")){
                     out.println("<h1>" + s.getNom() + "</h1>");
+                }
+                User user = (User) request.getSession().getAttribute("user");
+                if(user instanceof Etudiant) {
+                    for (Evaluation m : ((Etudiant) user).getEvaluations().values()) {
+                        out.println("<h1>" +m.getEquipe()+ "</h1>");
+                        out.println("<h5>" +m.getNb_heure()+ "</h5>");
+                        out.println("<h5>" +m.getSupport_pedagogiques()+ "</h5>");
+                        out.println("<h5>" +m.getCommentaire()+ "</h5>");
+
+                    }
                 }
 
         }
@@ -134,7 +143,6 @@ public class ServletCentrale extends HttpServlet {
             case "specialite.jsp":
                 String specialite = request.getParameter("specialite");
                 ArrayList<Etudiant> etudiantTri = new ArrayList<>();
-                System.out.println(specialite);
                 for (int i=0; i<listeEtudiants.size();i++){
                     if (listeEtudiants.get(i).getSpecialite().equals(specialite)){
                         etudiantTri.add(listeEtudiants.get(i));
@@ -144,6 +152,38 @@ public class ServletCentrale extends HttpServlet {
                 break;
             case "hello.jsp":
                 out.println("<h1>" + referer + "</h1>");
+                break;
+            case "evaluationmodule.jsp":
+                if(!Objects.equals(request.getParameter("supports"), "")
+                        && !Objects.equals(request.getParameter("equipe"), "")
+                        && !Objects.equals(request.getParameter("time"), "")
+                        && !Objects.equals(request.getParameter("commentaire"), "")
+                        && !Objects.equals(request.getParameter("module"), "")){
+                        User user = (User) request.getSession().getAttribute("user");
+                        if(user instanceof Etudiant){
+                            int supports = Integer.parseInt(request.getParameter("supports"));
+                            int equipe = Integer.parseInt(request.getParameter("equipe"));
+                            int time = Integer.parseInt(request.getParameter("time"));
+                            if(supports < 0) supports = 0;
+                            if(equipe < 0) equipe = 0;
+                            if(time < 0) time = 0;
+                            if(supports > 100) supports = 100;
+                            if(equipe > 100) equipe = 100;
+                            if(time > 100) time = 100;
+                            Evaluation evaluation = new Evaluation(supports, equipe, time, request.getParameter("commentaire"));
+                            Module module = null;
+                            for (Module m : ((Etudiant) user).getSpecialite().getListeModule()){
+                                if(m.getNom().equalsIgnoreCase(request.getParameter("module"))){
+                                    module = m;
+                                    break;
+                                }
+                            }
+                            if(module != null){
+                                ((Etudiant)user).getEvaluations().put(module, evaluation);
+                            }
+                        }
+                }
+                response.sendRedirect("homepage.jsp");
                 break;
             default:
                 // Login authentification
@@ -158,7 +198,11 @@ public class ServletCentrale extends HttpServlet {
                 }
                 if (authentificatedUser != null) {
                     response.sendRedirect("homepage.jsp");
-                    request.getSession().setAttribute("specialite",this.listeSpecialite);
+                    if(authentificatedUser instanceof Etudiant){
+                        request.getSession().setAttribute("specialite",this.listeSpecialite);
+                    }else if(authentificatedUser instanceof Administrateur){
+                        request.getSession().setAttribute("specialite",this.listeSpecialite);
+                    }
                     request.getSession().setAttribute("user",authentificatedUser);
                 } else {
                     response.sendRedirect("index.jsp?error=auth_failed");
