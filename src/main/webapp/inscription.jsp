@@ -1,4 +1,5 @@
 <%@ page import="fr.fisa.javaweb.beans.Specialite" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -107,15 +108,14 @@
                         <label for="password" class="form-label">Password</label>
                         <input type="password" class="form-control" name="password" id="password" required>
                     </div>
-<%--                    <select name="specialite" class="form-select" >--%>
-<%--&lt;%&ndash;                        <option selected>Sélectionner la spécialité</option>&ndash;%&gt;--%>
-<%--                        <%for( Specialite specialite : Specialite.values()){%>--%>
-<%--                        <option value="<%=specialite%>"><%=specialite%></option>--%>
-<%--                        <% }%>--%>
-<%--                    </select>--%>
                     <select name="specialite" class="form-select" >
-                        <option selected>Sélectionner la spécialité</option>
-                        <option value="Info">Info</option>
+                        <% ArrayList<Specialite> specialites = (ArrayList<Specialite>) session.getAttribute("specialite");
+                            if(specialites != null){
+                            for( int i = 0 ; i <  specialites.size(); i++){
+                                Specialite specialite =specialites.get(i);%>
+                        <option value="<%=i%>"><%=specialite.getNom()%></option>
+                        <% }
+                        }%>
                     </select>
                     <div class="d-flex justify-content-center">
                         <input class="btn btn-primary" type="submit" formaction="home" value="Inscrire étudiant">

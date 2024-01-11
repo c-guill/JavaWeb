@@ -58,7 +58,7 @@ public class ServletCentrale extends HttpServlet {
             listeEtudiants.add(etudiant);
             listeUser.add(etudiant);
         }
-        Administrateur admin = new Administrateur("Bob","Bob","1234");
+        Administrateur admin = new Administrateur("bob","bob","1234");
         Administrateur admin2 = new Administrateur("Guarim","raphael","1234");
         Administrateur admin3 = new Administrateur("Mesrine","Jacques","1234");
         listeUser.add(admin);
@@ -69,8 +69,11 @@ public class ServletCentrale extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
-        String[] referers = request.getHeader("referer").split("/");
-        String referer = referers[referers.length-1];
+        String referer = "";
+        if(request.getHeader("referer") != null) {
+            String[] referers = request.getHeader("referer").split("/");
+            referer = referers[referers.length - 1];
+        }
         PrintWriter out = response.getWriter();
         out.println("<html><body>");
         switch (referer) {
@@ -85,6 +88,11 @@ public class ServletCentrale extends HttpServlet {
                 for (Etudiant etudiant : this.listeEtudiants){
                     out.println("<h1>" + etudiant.getName() + "</h1>");
 
+                }
+                out.println("<h1>" + referer + "</h1>");
+
+                for (Specialite s : (ArrayList<Specialite>) request.getSession().getAttribute("specialite")){
+                    out.println("<h1>" + s.getNom() + "</h1>");
                 }
 
         }
@@ -141,6 +149,7 @@ public class ServletCentrale extends HttpServlet {
                 }
                 if (authentificatedUser != null) {
                     response.sendRedirect("homepage.jsp");
+                    request.getSession().setAttribute("specialite",this.listeSpecialite);
                 } else {
                     response.sendRedirect("index.jsp?error=auth_failed");
                 }
