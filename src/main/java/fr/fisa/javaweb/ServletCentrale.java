@@ -2,13 +2,13 @@ package fr.fisa.javaweb;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 
 import fr.fisa.javaweb.beans.Administrateur;
 import fr.fisa.javaweb.beans.Etudiant;
 import fr.fisa.javaweb.beans.Module;
-import fr.fisa.javaweb.beans.Administrateur;
 import fr.fisa.javaweb.beans.Specialite;
 import fr.fisa.javaweb.beans.User;
 import fr.fisa.javaweb.beans.Tuple;
@@ -58,7 +58,7 @@ public class ServletCentrale extends HttpServlet {
             listeEtudiants.add(etudiant);
             listeUser.add(etudiant);
         }
-        Administrateur admin = new Administrateur("Bob","Bob","1234");
+        Administrateur admin = new Administrateur("bob","bob","1234");
         Administrateur admin2 = new Administrateur("Guarim","raphael","1234");
         Administrateur admin3 = new Administrateur("Mesrine","Jacques","1234");
         listeUser.add(admin);
@@ -69,8 +69,11 @@ public class ServletCentrale extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
-        String[] referers = request.getHeader("referer").split("/");
-        String referer = referers[referers.length-1];
+        String referer = "";
+        if(request.getHeader("referer") != null) {
+            String[] referers = request.getHeader("referer").split("/");
+            referer = referers[referers.length - 1];
+        }
         PrintWriter out = response.getWriter();
         out.println("<html><body>");
         switch (referer) {
@@ -86,7 +89,12 @@ public class ServletCentrale extends HttpServlet {
                     out.println("<h1>" + etudiant.getName() + "</h1>");
 
                 }
+                out.println("<h1>" + referer + "</h1>");
 
+                for (Specialite s : (ArrayList<Specialite>) request.getSession().getAttribute("specialite")){
+                    out.println("<h1>" + s.getNom() + "</h1>");
+                }
+                break;
         }
         out.println("</body></html>");
 
@@ -103,14 +111,23 @@ public class ServletCentrale extends HttpServlet {
             case "inscription.jsp":
                 if(!Objects.equals(request.getParameter("prenom"), "")
                 && !Objects.equals(request.getParameter("INE"), "")
-                && !Objects.equals(request.getParameter("password"), "")){
-                    Etudiant etudiant = new Etudiant(request.getParameter("nom"),
-                            request.getParameter("prenom"),
-                            request.getParameter("INE"),
-                            //Specialite.valueOf(request.getParameter("specialite")),
-                            this.listeSpecialite.get(0),
-                            request.getParameter("password"));
-                    this.listeEtudiants.add(etudiant);
+                && !Objects.equals(request.getParameter("password"), "")
+                && !Objects.equals(request.getParameter("specialite"), "")){
+                    Specialite specialite = null;
+                    for (Specialite s : this.listeSpecialite){
+                        if(s.getNom().equals(request.getParameter("specialite"))){
+                            specialite = s;
+                            break;
+                        }
+                    }
+                    if(specialite != null) {
+                        Etudiant etudiant = new Etudiant(request.getParameter("nom"),
+                                request.getParameter("prenom"),
+                                request.getParameter("INE"),
+                                this.listeSpecialite.get(0),
+                                request.getParameter("password"));
+                        this.listeEtudiants.add(etudiant);
+                    }
                 }
                 response.sendRedirect("index.jsp");
                 break;
@@ -128,6 +145,37 @@ public class ServletCentrale extends HttpServlet {
             case "hello.jsp":
                 out.println("<h1>" + referer + "</h1>");
                 break;
+            case "studentNotes.jsp":
+                // Redirect to studentNotes.jsp
+                String nomEtu = request.getParameter("nom-etu");
+                String INE = request.getParameter("INE");
+                System.out.println(request.getParameter("modules"));
+                String module = request.getParameter("modules");
+                int semestre = Integer.parseInt(request.getParameter("semester"));
+                float notes = Float.parseFloat(request.getParameter("notes"));
+
+                System.out.println(module + "; " + notes);
+                for (Etudiant etu : listeEtudiants) {
+                    if (nomEtu.equals(etu.getName()) && INE.equals(etu.getINE())) {
+                        /*System.out.println("<h1>All notes of etudiant " + etu.getName()+"</h1>");
+                        for (Map.Entry<Tuple, Float> entry : etu.getNotes().entrySet()) {
+                            Tuple key = entry.getKey();
+                            float value = entry.getValue();
+                            System.out.println("<p>Module: " + key.getModule().getNom() + ", Semestre: " + key.getSemestre() + ", Notes: " + value);
+                        }*/
+                        Tuple key = new Tuple(new Module(module), semestre);
+                        etu.addNotes(key, notes);
+                    }
+
+                    //System.out.println("All notes of etudiant " + etu.getName() + " after add new notes: ");
+                    for (Map.Entry<Tuple, Float> entry : etu.getNotes().entrySet()) {
+                        Tuple key = entry.getKey();
+                        float value = entry.getValue();
+                        //System.out.println("Module: " + key.getModule().getNom() + ", Semestre: " + key.getSemestre() + ", Notes: " + value + "</p>");
+                    }
+                }
+                response.sendRedirect("studentNotes.jsp");
+                break;
             default:
                 // Login authentification
                 String name = request.getParameter("name");
@@ -141,6 +189,8 @@ public class ServletCentrale extends HttpServlet {
                 }
                 if (authentificatedUser != null) {
                     response.sendRedirect("homepage.jsp");
+                    request.getSession().setAttribute("specialite",this.listeSpecialite);
+                    request.getSession().setAttribute("user",authentificatedUser);
                 } else {
                     response.sendRedirect("index.jsp?error=auth_failed");
                 }

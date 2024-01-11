@@ -1,15 +1,23 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: w136761
+  Date: 11/01/2024
+  Time: 08:26
+  To change this template use File | Settings | File Templates.
+--%>
 <%@include file="header.jsp"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
-
 <body>
+
 <main id="main">
+
     <!-- ======= Breadcrumbs ======= -->
     <section id="breadcrumbs" class="breadcrumbs">
         <div class="container">
             <br>
-            <h2>Authentification - Se Connecter</h2>
+            <h2>Notation de module</h2>
 
         </div>
     </section><!-- End Breadcrumbs -->
@@ -17,35 +25,30 @@
     <section class="inner-page">
         <div class="container d-flex justify-content-center login-register-form">
             <div class=" col-md-4 flex-column justify-content-center">
-                <img src="assets/img/identification.png" class="col-12 d-flex justify-content-center">
+                <img src="assets/img/student.png" class="col-12 d-flex justify-content-center">
                 <form class="row g-3 " method="post" novalidate>
                     <div class="">
-                        <label for="name" class="form-label">Nom d'utilisateur</label>
-                        <input type="text" class="form-control " id="name" name="name" aria-describedby="emailHelp" required>
-                        <div class="valid-feedback">
-                            Looks good!
-                        </div>
-                        <div class="invalid-feedback">
-                            Email incorrect.
-                        </div>
+                        <label for="nom" class="form-label">Nom de l'étudiant</label>
+                        <input type="text" class="form-control " id="nom" name="nom" required>
                     </div>
 
                     <div class="">
-                        <label for="password" class="form-label">Mot de passe</label>
-                        <input type="password" class="form-control " id="password" name="password" required>
-                        <div class="valid-feedback">
-                            C'est bon!
-                        </div>
-
-                        <div class="invalid-feedback">
-                            Mauvaise mot de passe!
-                        </div>
+                        <label for="prenom" class="form-label">Prenom</label>
+                        <input type="text" class="form-control" id="prenom" name="prenom" required>
                     </div>
-
+                    <div class="">
+                        <label for="INE" class="form-label">INE</label>
+                        <input type="text" class="form-control" id="INE" name="INE" required>
+                    </div>
+                    <div class="">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" name="password" id="password" required>
+                    </div>
+                    <select name="specialite" class="form-select" >
+                    </select>
                     <div class="d-flex justify-content-center">
-                        <button class="btn btn-primary" type="submit" formaction="home">Se Connecter</button>
+                        <input class="btn btn-primary" type="submit" formaction="home" value="Inscrire étudiant">
                     </div>
-                    <p style="place-content: center; display: flex">Nouveau à INSA-Stu?<a href="/register">&nbsp;Créer un compte maintenant.</a></p>
                 </form>
             </div>
         </div>
@@ -53,7 +56,6 @@
 
 </main><!-- End #main -->
 
-<%@include file="footer.jsp"%>
 
 
 <div id="preloader"></div>
@@ -72,4 +74,6 @@
 <script src="assets/js/main.js"></script>
 
 </body>
+<%@include file="footer.jsp"%>
+
 </html>
