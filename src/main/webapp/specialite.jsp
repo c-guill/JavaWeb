@@ -37,6 +37,8 @@
             <% }
             }%>
         </select>
+        <button type="submit" formaction="home">Valider</button>
+    </form>
 
         <%
             ArrayList<Etudiant> etudiants = (ArrayList<Etudiant>) session.getAttribute("ListeEtudiantTri");
@@ -48,15 +50,12 @@
         <p><%= etu.getINE() %> <%= etu.getName() %> <%= etu.getPrenom() %></p>
         <%
             }
-            } else {
+        } else {
         %>
         <p>Aucune spécialité trouvée dans la session.</p>
         <%
             }
         %>
-
-        <button type="submit" formaction="home">Valider</button>
-    </form>
 
     </section>
 </main><!-- End #main -->
