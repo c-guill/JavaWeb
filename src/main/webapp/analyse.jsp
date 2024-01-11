@@ -1,19 +1,20 @@
 <%--
   Created by IntelliJ IDEA.
-  User: RG21262
-  Date: 10/01/2024
-  Time: 17:46
+  User: w136761
+  Date: 11/01/2024
+  Time: 10:16
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page import="fr.fisa.javaweb.beans.Specialite" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="fr.fisa.javaweb.beans.Etudiant" %>
 <%@ page import="fr.fisa.javaweb.beans.Module" %>
+<%@ page import="fr.fisa.javaweb.beans.Evaluation" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="header.jsp"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
 <body>
+<link rel="stylesheet" href="assets/css/analyse.css">
 <main id="main">
 
     <!-- ======= Breadcrumbs ======= -->
@@ -32,9 +33,8 @@
             <select name="module" class="form-select" >
                 <% ArrayList<Module> modules = (ArrayList<Module>) session.getAttribute("module");
                     if(modules != null){
-                        for( int i = 0 ; i <  modules.size(); i++){
-                            Module module =modules.get(i);%>
-                <option value="<%=i%>"><%=module.getNom()%></option>
+                        for(Module module : modules){%>
+                <option value="<%=module.getNom()%>"><%=module.getNom()%></option>
                 <% }
                 }%>
             </select>
@@ -42,6 +42,22 @@
 
             <button type="submit" formaction="home">Valider</button>
         </form>
+
+        <%ArrayList<Evaluation> evaluations = (ArrayList<Evaluation>) session.getAttribute("evaluations");%>
+      <% if(evaluations != null){%>
+        <p><%=evaluations.size()%></p>
+        <svg viewBox="0 0 36 36" class="circle-svg">
+
+            <path class="around" stroke-dasharray="100, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"></path>
+
+            <path class="percent" stroke-dasharray="<%evaluations%>, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"></path>
+
+            <text x="18" y="14" text-anchor="middle" dy="7" font-size="20">3/10</text>
+
+        </svg>
+        <%}%>
+
+
 
     </section>
 </main><!-- End #main -->
@@ -65,3 +81,4 @@
 
 </body>
 </html>
+
