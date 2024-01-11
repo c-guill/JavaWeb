@@ -45,7 +45,6 @@
                     <div class="d-flex justify-content-center">
                         <button class="btn btn-primary" type="submit" formaction="home">Se Connecter</button>
                     </div>
-                    <p style="place-content: center; display: flex">Nouveau à INSA-Stu?<a href="/register">&nbsp;Créer un compte maintenant.</a></p>
                 </form>
             </div>
         </div>
