@@ -1,9 +1,7 @@
 package fr.fisa.javaweb;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 
 import fr.fisa.javaweb.beans.*;
 import fr.fisa.javaweb.beans.Administrateur;
@@ -57,6 +55,9 @@ public class ServletCentrale extends HttpServlet {
             int aleaNom = new Random().nextInt(prenoms.length);
             int alea = new Random().nextInt(listeSpecialite.size());
             Etudiant etudiant = new Etudiant(prenoms[aleaNom],prenoms[aleaPrenom],prenoms[aleaPrenom],listeSpecialite.get(alea),String.valueOf(i));
+            etudiant.addNotes(new Tuple(listeModule.get(0),1),aleaNom);
+            etudiant.addNotes(new Tuple(listeModule.get(1),1),aleaPrenom);
+            etudiant.addNotes(new Tuple(listeModule.get(2),1),alea);
             listeEtudiants.add(etudiant);
             listeUser.add(etudiant);
         }
@@ -150,22 +151,36 @@ public class ServletCentrale extends HttpServlet {
             case "specialite.jsp":
                 Specialite specialite = listeSpecialite.get(Integer.parseInt(request.getParameter("specialite")));
                 ArrayList<Etudiant> etudiantTri = new ArrayList<>();
-                System.out.println(specialite.getNom());
                 for (int i=0; i<listeEtudiants.size();i++){
-                    System.out.println("Test :"+listeEtudiants.get(i).getSpecialite().getNom()+" ---- "+specialite.getNom());
                     if (listeEtudiants.get(i).getSpecialite().getNom().equals(specialite.getNom())){
-                        System.out.println("suuuu");
                         etudiantTri.add(listeEtudiants.get(i));
                     }
                 }
-                System.out.println(etudiantTri.size());
                 response.sendRedirect("specialite.jsp");
                 request.getSession().setAttribute("ListeEtudiantTri",etudiantTri);
                 break;
             case "module.jsp":
                 Module module = listeModule.get(Integer.parseInt(request.getParameter("module")));
-                ArrayList<Etudiant> etudiantMod = new ArrayList<>();
-                System.out.println(module.getNom());
+                ArrayList<HashMap> etudiantNote = new ArrayList<>();
+                // On va chercher les notes de chaque étudiant inscris dans le module
+                for (int i=0; i<listeEtudiants.size();i++){
+                    for (int j=0; j<listeEtudiants.get(i).getSpecialite().getListeModule().size(); j++){
+                        if (listeEtudiants.get(i).getSpecialite().getListeModule().get(j).getNom().equals(module.getNom())){
+                            HashMap notes = new HashMap<>();
+                            for (Map.Entry<Tuple, Float> entry : listeEtudiants.get(i).getNotes().entrySet()) {
+                                Tuple cle = entry.getKey();
+                                if (cle.getModule().getNom().equals(module.getNom())){
+                                    Float valeur = entry.getValue();
+                                    notes.put(i,valeur);
+                                    etudiantNote.add(notes);
+                                }
+                            }
+                        }
+                    }
+                }
+                response.sendRedirect("module.jsp");
+                request.getSession().setAttribute("ListeEtudiantNote",etudiantNote);
+                request.getSession().setAttribute("ListeEtudiantID",this.listeEtudiants);
                 break;
             case "analyse.jsp":
                 User user = (User) request.getSession().getAttribute("user");
