@@ -41,9 +41,8 @@
                     <select name="specialite" class="form-select" >
                         <% ArrayList<Specialite> specialites = (ArrayList<Specialite>) session.getAttribute("specialite");
                             if(specialites != null){
-                            for( int i = 0 ; i <  specialites.size(); i++){
-                                Specialite specialite =specialites.get(i);%>
-                        <option value="<%=i%>"><%=specialite.getNom()%></option>
+                            for(Specialite specialite : specialites){%>
+                        <option value="<%=specialite.getNom()%>"><%=specialite.getNom()%></option>
                         <% }
                         }%>
                     </select>

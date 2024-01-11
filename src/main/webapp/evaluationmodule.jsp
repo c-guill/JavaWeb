@@ -1,4 +1,7 @@
-<%--
+<%@ page import="fr.fisa.javaweb.beans.User" %>
+<%@ page import="fr.fisa.javaweb.beans.Etudiant" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="fr.fisa.javaweb.beans.Module" %><%--
   Created by IntelliJ IDEA.
   User: w136761
   Date: 11/01/2024
@@ -27,27 +30,44 @@
             <div class=" col-md-4 flex-column justify-content-center">
                 <img src="assets/img/student.png" class="col-12 d-flex justify-content-center">
                 <form class="row g-3 " method="post" novalidate>
+                    <label for="module" class="form-label">Choississez le module à évaluer</label>
+                    <select id="module" name="module" class="form-select" >
+                        <% User user = (User) session.getAttribute("user");
+                            if(user instanceof Etudiant){
+                                Etudiant etudiant = (Etudiant) user;
+                                ArrayList<Module> modules = etudiant.getSpecialite().getListeModule();
+                                for (Module module : modules){
+                                    if(!etudiant.getEvaluations().containsKey(module)){ %>
+                        <option value="<%=module.getNom()%>"><%=module.getNom()%></option>
+
+
+                        <%}
+                                }
+
+                            }
+                        %>
+                    </select>
                     <div class="">
-                        <label for="nom" class="form-label">Nom de l'étudiant</label>
-                        <input type="text" class="form-control " id="nom" name="nom" required>
+                        <label for="supports" class="form-label">Qualité des supports pédagiques (/100)</label>
+                        <input type="number" name="supports" id="supports" class="form-control" />
                     </div>
 
                     <div class="">
-                        <label for="prenom" class="form-label">Prenom</label>
-                        <input type="text" class="form-control" id="prenom" name="prenom" required>
+                        <label for="equipe" class="form-label">Qualité de l'équipe pédagogique (/100)</label>
+                        <input type="number" name="equipe" id="equipe" class="form-control" />
                     </div>
+
                     <div class="">
-                        <label for="INE" class="form-label">INE</label>
-                        <input type="text" class="form-control" id="INE" name="INE" required>
+                        <label for="time" class="form-label">temps consacrer aux activités (/100)</label>
+                        <input type="number" name="time" id="time" class="form-control" />
                     </div>
+
                     <div class="">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" name="password" id="password" required>
+                        <label for="commentaire" class="form-label">Commentaire sur le module</label>
+                        <textarea class="form-control" name="commentaire" id="commentaire" rows="3"></textarea>
                     </div>
-                    <select name="specialite" class="form-select" >
-                    </select>
                     <div class="d-flex justify-content-center">
-                        <input class="btn btn-primary" type="submit" formaction="home" value="Inscrire étudiant">
+                        <input class="btn btn-primary" type="submit" formaction="home" value="Ajouter évaluation">
                     </div>
                 </form>
             </div>
