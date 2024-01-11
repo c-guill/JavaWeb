@@ -24,6 +24,7 @@ public class ServletCentrale extends HttpServlet {
     private ArrayList<Etudiant> listeEtudiants;
     private ArrayList<Specialite> listeSpecialite;
     private ArrayList<User> listeUser;
+    private ArrayList<Module> listeModule;
 
     public void init() {
         listeSpecialite = new ArrayList<>();
@@ -33,6 +34,11 @@ public class ServletCentrale extends HttpServlet {
         listeSpecialite.add(new Specialite("Cyber"));
         listeSpecialite.add(new Specialite("Electronique"));
         listeSpecialite.add(new Specialite("Robotique"));
+
+        listeModule = new ArrayList<>();
+        listeModule.add(new Module("Francais"));
+        listeModule.add(new Module("Anglais"));
+        listeModule.add(new Module("Droit"));
 
         for (int i = 0; i < listeSpecialite.size(); i++){
             listeSpecialite.get(i).addmodule(new Module("Francais"));
@@ -146,6 +152,11 @@ public class ServletCentrale extends HttpServlet {
                 response.sendRedirect("specialite.jsp");
                 request.getSession().setAttribute("ListeEtudiantTri",etudiantTri);
                 break;
+            case "module.jsp":
+                Module module = listeModule.get(Integer.parseInt(request.getParameter("module")));
+                ArrayList<Etudiant> etudiantMod = new ArrayList<>();
+                System.out.println(module.getNom());
+                break;
             case "hello.jsp":
                 out.println("<h1>" + referer + "</h1>");
                 break;
@@ -163,6 +174,7 @@ public class ServletCentrale extends HttpServlet {
                 if (authentificatedUser != null) {
                     response.sendRedirect("homepage.jsp");
                     request.getSession().setAttribute("specialite",this.listeSpecialite);
+                    request.getSession().setAttribute("module",this.listeModule);
                     request.getSession().setAttribute("user",authentificatedUser);
                 } else {
                     response.sendRedirect("index.jsp?error=auth_failed");
