@@ -111,14 +111,23 @@ public class ServletCentrale extends HttpServlet {
             case "inscription.jsp":
                 if(!Objects.equals(request.getParameter("prenom"), "")
                 && !Objects.equals(request.getParameter("INE"), "")
-                && !Objects.equals(request.getParameter("password"), "")){
-                    Etudiant etudiant = new Etudiant(request.getParameter("nom"),
-                            request.getParameter("prenom"),
-                            request.getParameter("INE"),
-                            //Specialite.valueOf(request.getParameter("specialite")),
-                            this.listeSpecialite.get(0),
-                            request.getParameter("password"));
-                    this.listeEtudiants.add(etudiant);
+                && !Objects.equals(request.getParameter("password"), "")
+                && !Objects.equals(request.getParameter("specialite"), "")){
+                    Specialite specialite = null;
+                    for (Specialite s : this.listeSpecialite){
+                        if(s.getNom().equals(request.getParameter("specialite"))){
+                            specialite = s;
+                            break;
+                        }
+                    }
+                    if(specialite != null) {
+                        Etudiant etudiant = new Etudiant(request.getParameter("nom"),
+                                request.getParameter("prenom"),
+                                request.getParameter("INE"),
+                                this.listeSpecialite.get(0),
+                                request.getParameter("password"));
+                        this.listeEtudiants.add(etudiant);
+                    }
                 }
                 response.sendRedirect("index.jsp");
                 break;
@@ -150,6 +159,7 @@ public class ServletCentrale extends HttpServlet {
                 if (authentificatedUser != null) {
                     response.sendRedirect("homepage.jsp");
                     request.getSession().setAttribute("specialite",this.listeSpecialite);
+                    request.getSession().setAttribute("user",authentificatedUser);
                 } else {
                     response.sendRedirect("index.jsp?error=auth_failed");
                 }
