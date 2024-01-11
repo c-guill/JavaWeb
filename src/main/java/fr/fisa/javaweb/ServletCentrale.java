@@ -50,7 +50,6 @@ public class ServletCentrale extends HttpServlet {
         };
         listeEtudiants = new ArrayList<>();
 
-
         for (int i = 0; i < 10; i++){
             int aleaPrenom = new Random().nextInt(prenoms.length);
             int aleaNom = new Random().nextInt(prenoms.length);
