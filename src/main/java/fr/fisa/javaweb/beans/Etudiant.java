@@ -48,6 +48,10 @@ public class Etudiant extends User {
         this.notes = notes;
     }
 
+    public void addNotes(Tuple key, float value) {
+        notes.put(key, value);
+    }
+
     public HashMap<Module, Evaluation> getEvaluations() {
         return evaluations;
     }

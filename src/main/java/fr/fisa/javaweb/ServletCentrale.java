@@ -4,7 +4,6 @@ import java.io.*;
 import java.util.*;
 
 import fr.fisa.javaweb.beans.*;
-import fr.fisa.javaweb.beans.Administrateur;
 import fr.fisa.javaweb.beans.Module;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletContext;
@@ -190,31 +189,61 @@ public class ServletCentrale extends HttpServlet {
                         && !Objects.equals(request.getParameter("time"), "")
                         && !Objects.equals(request.getParameter("commentaire"), "")
                         && !Objects.equals(request.getParameter("module"), "")){
-                        User user = (User) request.getSession().getAttribute("user");
-                        if(user instanceof Etudiant){
-                            int supports = Integer.parseInt(request.getParameter("supports"));
-                            int equipe = Integer.parseInt(request.getParameter("equipe"));
-                            int time = Integer.parseInt(request.getParameter("time"));
-                            if(supports < 0) supports = 0;
-                            if(equipe < 0) equipe = 0;
-                            if(time < 0) time = 0;
-                            if(supports > 100) supports = 100;
-                            if(equipe > 100) equipe = 100;
-                            if(time > 100) time = 100;
-                            Evaluation evaluation = new Evaluation(supports, equipe, time, request.getParameter("commentaire"));
-                            module = null;
-                            for (Module m : ((Etudiant) user).getSpecialite().getListeModule()){
-                                if(m.getNom().equalsIgnoreCase(request.getParameter("module"))){
-                                    module = m;
-                                    break;
-                                }
-                            }
-                            if(module != null){
-                                ((Etudiant)user).getEvaluations().put(module, evaluation);
+                    User user = (User) request.getSession().getAttribute("user");
+                    if(user instanceof Etudiant){
+                        int supports = Integer.parseInt(request.getParameter("supports"));
+                        int equipe = Integer.parseInt(request.getParameter("equipe"));
+                        int time = Integer.parseInt(request.getParameter("time"));
+                        if(supports < 0) supports = 0;
+                        if(equipe < 0) equipe = 0;
+                        if(time < 0) time = 0;
+                        if(supports > 100) supports = 100;
+                        if(equipe > 100) equipe = 100;
+                        if(time > 100) time = 100;
+                        Evaluation evaluation = new Evaluation(supports, equipe, time, request.getParameter("commentaire"));
+                        module = null;
+                        for (Module m : ((Etudiant) user).getSpecialite().getListeModule()){
+                            if(m.getNom().equalsIgnoreCase(request.getParameter("module"))){
+                                module = m;
+                                break;
                             }
                         }
+                        if(module != null){
+                            ((Etudiant)user).getEvaluations().put(module, evaluation);
+                        }
+                    }
                 }
                 response.sendRedirect("homepage.jsp");
+                break;
+            case "studentNotes.jsp":
+                // Redirect to studentNotes.jsp
+                String nomEtu = request.getParameter("nom-etu");
+                String INE = request.getParameter("INE");
+                System.out.println(request.getParameter("modules"));
+                String mod = request.getParameter("modules");
+                int semestre = Integer.parseInt(request.getParameter("semester"));
+                float notes = Float.parseFloat(request.getParameter("notes"));
+
+                for (Etudiant etu : listeEtudiants) {
+                    if (nomEtu.equals(etu.getName()) && INE.equals(etu.getINE())) {
+                        /*System.out.println("<h1>All notes of etudiant " + etu.getName()+"</h1>");
+                        for (Map.Entry<Tuple, Float> entry : etu.getNotes().entrySet()) {
+                            Tuple key = entry.getKey();
+                            float value = entry.getValue();
+                            System.out.println("<p>Module: " + key.getModule().getNom() + ", Semestre: " + key.getSemestre() + ", Notes: " + value);
+                        }*/
+                        Tuple key = new Tuple(new Module(mod), semestre);
+                        etu.addNotes(key, notes);
+                    }
+
+                    //System.out.println("All notes of etudiant " + etu.getName() + " after add new notes: ");
+                    for (Map.Entry<Tuple, Float> entry : etu.getNotes().entrySet()) {
+                        Tuple key = entry.getKey();
+                        float value = entry.getValue();
+                        //System.out.println("Module: " + key.getModule().getNom() + ", Semestre: " + key.getSemestre() + ", Notes: " + value + "</p>");
+                    }
+                }
+                response.sendRedirect("studentNotes.jsp");
                 break;
             default:
                 // Login authentification

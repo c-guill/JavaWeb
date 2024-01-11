@@ -1,5 +1,8 @@
 <%@ page import="fr.fisa.javaweb.beans.Specialite" %>
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="fr.fisa.javaweb.beans.Module" %>
+<%@ page import="java.util.HashSet" %>
+<%@ page import="java.util.Set" %>
 <%@include file="header.jsp"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
@@ -21,26 +24,48 @@
         <div class="container d-flex justify-content-center login-register-form">
             <div class=" col-md-4 flex-column justify-content-center">
                 <img src="assets/img/Enter_data.png" class="col-12 d-flex justify-content-center">
-                <form class="row g-3 " novalidate>
+                <form class="row g-3 " method="post" novalidate>
                     <div class="">
                         <label for="nom" class="form-label">Nom de l'étudiant</label>
-                        <input type="text" class="form-control " id="nom" required>
+                        <input type="text" class="form-control " id="nom" name="nom-etu" required>
                     </div>
+                    <div class="">
+                        <label for="INE" class="form-label">INE</label>
+                        <input type="text" class="form-control" id="INE" name="INE" required>
+                    </div>
+                    <div class="">
+                        <label for="modules">Sélectionner un module:</label>
+                        <select name="modules" id="modules" class="form-select">
+                            <%
+                                Set<String> uniqueModules = new HashSet<>(); // Using a set to store unique module names
+                                ArrayList<Specialite> specialites = (ArrayList<Specialite>) session.getAttribute("specialite");
 
-                    <div class="">
-                        <label for="prenom" class="form-label">Prénom</label>
-                        <input type="text" class="form-control" id="prenom" required>
+                                if (specialites != null) {
+                                    for (Specialite specialite : specialites) {
+                                        if (specialite.getListeModule() != null) {
+                                            for (Module module : specialite.getListeModule()) {
+                                                uniqueModules.add(module.getNom()); // Adding module name to the set
+                                            }
+                                        }
+                                    }
+                                }
+
+                                for (String moduleName : uniqueModules) { %>
+                                    <option value="<%= moduleName %>"><%= moduleName %></option>
+                                <% }
+                            %>
+                        </select>
                     </div>
                     <div class="">
-                        <label for="nom-module" class="form-label">Nom de module</label>
-                        <input type="text" class="form-control" id="nom-module" required>
+                        <label for="semester" class="form-label">Semestre</label>
+                        <input type="number" class="form-control" id="semester" name="semester" max="10" required>
                     </div>
                     <div class="">
                         <label for="notes" class="form-label">Notes</label>
-                        <input type="number" class="form-control" id="notes" required>
+                        <input type="number" class="form-control" id="notes" name="notes" step="0.01" placeholder="0.00" required>
                     </div>
                     <div class="d-flex justify-content-center">
-                        <button class="btn btn-primary" type="button">Entrer notes d'étudiant</button>
+                        <button class="btn btn-primary" type="submit" formaction="home">Entrer notes d'étudiant</button>
                     </div>
                 </form>
             </div>
