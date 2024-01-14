@@ -54,6 +54,7 @@
                 <li><a class="nav-link   scrollto" href="module.jsp">Module</a></li>
                 <li><a class="nav-link scrollto" href="specialite.jsp">Specialite</a></li>
                 <li><a class="nav-link scrollto" href="analyse.jsp">Analyse</a></li>
+                <li><a class="nav-link scrollto" href="notes.jsp">Notes Module</a></li>
                 <li><a class="nav-link scrollto" href="evaluationmodule.jsp">Evaluation module</a></li>
                 <li><a class="getstarted scrollto" href="/">Login</a></li>
             </ul>

@@ -64,6 +64,10 @@ public class ServletCentrale extends HttpServlet {
         listeEtudiants.add(etudiant);
         listeUser.add(etudiant);
         etudiant.getEvaluations().put(listeSpecialite.get(0).getListeModule().get(0), new Evaluation(50,50,50,"ok"));
+        etudiant.addNotes(new Tuple(listeModule.get(0),1),5);
+        etudiant.addNotes(new Tuple(listeModule.get(1),1),6);
+        etudiant.addNotes(new Tuple(listeModule.get(2),1),7);
+        etudiant.addNotes(new Tuple(listeModule.get(2),2),7);
         Administrateur admin = new Administrateur("bob","bob","1234");
         Administrateur admin2 = new Administrateur("Guarim","raphael","1234");
         Administrateur admin3 = new Administrateur("Mesrine","Jacques","1234");
@@ -181,6 +185,32 @@ public class ServletCentrale extends HttpServlet {
                 request.getSession().setAttribute("ListeEtudiantNote",etudiantNote);
                 request.getSession().setAttribute("ListeEtudiantID",this.listeEtudiants);
                 break;
+            case "notes.jsp":
+                Module module2 = listeModule.get(Integer.parseInt(request.getParameter("module")));
+                int semestre2 = Integer.parseInt(request.getParameter("semestre"));
+                User use = (User) request.getSession().getAttribute("user");
+                Etudiant etud = null;
+                // Reconnaissance de l'etudiant connécté
+                for (int i=0; i<listeEtudiants.size();i++){
+                    if (listeEtudiants.get(i).getPrenom().equals(use.getPrenom()) && listeEtudiants.get(i).getName().equals(use.getName()) && listeEtudiants.get(i).getPassword().equals((use.getPassword()))){
+                        etud = (Etudiant) listeEtudiants.get(i);
+                    }
+                }
+                // Tri des notes selon la selection
+                ArrayList<Float> Listenotes = new ArrayList<>();
+                for (Map.Entry<Tuple, Float> entry : etud.getNotes().entrySet()) {
+                    if (entry.getKey().getModule().equals(module2) && entry.getKey().getSemestre()==semestre2){
+                        System.out.println(entry.getValue());
+                        Listenotes.add(entry.getValue());
+                    }
+                }
+                ArrayList<String> details = new ArrayList<>();
+                details.add(module2.getNom());
+                details.add(String.valueOf(semestre2));
+                response.sendRedirect("notes.jsp");
+                request.getSession().setAttribute("ListeNotesTri",Listenotes);
+                request.getSession().setAttribute("details",details);
+                break;
             case "analyse.jsp":
                 User user = (User) request.getSession().getAttribute("user");
                 ArrayList<Evaluation> evaluations = new ArrayList<>();
@@ -203,7 +233,6 @@ public class ServletCentrale extends HttpServlet {
                 }
                 request.getSession().setAttribute("evaluations",evaluations);
                 response.sendRedirect("analyse.jsp");
-
                 break;
             case "hello.jsp":
                 out.println("<h1>" + referer + "</h1>");
@@ -283,9 +312,9 @@ public class ServletCentrale extends HttpServlet {
                 }
                 if (authentificatedUser != null) {
                     response.sendRedirect("homepage.jsp");
+                    request.getSession().setAttribute("module",this.listeModule);
                     if(authentificatedUser instanceof Administrateur){
                         request.getSession().setAttribute("specialite",this.listeSpecialite);
-                        request.getSession().setAttribute("module",this.listeModule);
                     }
                     request.getSession().setAttribute("user",authentificatedUser);
                 } else {

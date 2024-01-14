@@ -40,10 +40,6 @@ public class Etudiant extends User {
         return notes;
     }
 
-    public void addNotes(Tuple key, float value) {
-        notes.put(key, value);
-    }
-
     public void setNotes(HashMap<Tuple, Float> notes) {
         this.notes = notes;
     }
