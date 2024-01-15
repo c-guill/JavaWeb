@@ -56,7 +56,7 @@
                 <li><a class="nav-link scrollto" href="analyse.jsp">Analyse</a></li>
                 <li><a class="nav-link scrollto" href="notes.jsp">Notes Module</a></li>
                 <li><a class="nav-link scrollto" href="evaluationmodule.jsp">Evaluation module</a></li>
-                <li><a class="getstarted scrollto" href="/">Login</a></li>
+                <li><a class="getstarted scrollto" href="index.jsp">Login</a></li>
             </ul>
             <i class="bi bi-list mobile-nav-toggle"></i>
         </nav><!-- .navbar -->

@@ -1,5 +1,7 @@
 package fr.fisa.javaweb.beans;
 
+import java.util.ArrayList;
+
 public class Evaluation {
 
     private int support_pedagogiques;
@@ -47,5 +49,35 @@ public class Evaluation {
 
     public void setCommentaire(String commentaire) {
         this.commentaire = commentaire;
+    }
+
+    public static int getAverageSupport(ArrayList<Evaluation> evaluations){
+        if(evaluations.isEmpty()) return 0;
+        int result = 0;
+        for(Evaluation evaluation : evaluations){
+            result+=evaluation.getSupport_pedagogiques();
+        }
+        return result / evaluations.size();
+
+    }
+
+    public static int getAverageEquipe(ArrayList<Evaluation> evaluations){
+        if(evaluations.isEmpty()) return 0;
+        int result = 0;
+        for(Evaluation evaluation : evaluations){
+            result+=evaluation.getEquipe();
+        }
+        return result / evaluations.size();
+
+    }
+
+    public static int getAverageHeure(ArrayList<Evaluation> evaluations){
+        if(evaluations.isEmpty()) return 0;
+        int result = 0;
+        for(Evaluation evaluation : evaluations){
+            result+=evaluation.getNb_heure();
+        }
+        return result / evaluations.size();
+
     }
 }

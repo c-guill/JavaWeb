@@ -45,17 +45,44 @@
 
         <%ArrayList<Evaluation> evaluations = (ArrayList<Evaluation>) session.getAttribute("evaluations");%>
       <% if(evaluations != null){%>
-        <p><%=evaluations.size()%></p>
+        <h1>Nombre d'évaluation : <%=evaluations.size()%></h1>
+        <% if(!evaluations.isEmpty()){%>
+        <h3>La qualité des supports pédagogiques :</h3>
         <svg viewBox="0 0 36 36" class="circle-svg">
 
             <path class="around" stroke-dasharray="100, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"></path>
 
-            <path class="percent" stroke-dasharray=", 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"></path>
+            <path class="percent purple" stroke-dasharray="<%=Evaluation.getAverageSupport(evaluations)%>, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"></path>
 
-            <text x="18" y="14" text-anchor="middle" dy="7" font-size="20">3/10</text>
+            <text x="18" y="14" text-anchor="middle" dy="7" font-size="20"><%=Evaluation.getAverageSupport(evaluations)%>%</text>
 
         </svg>
-        <%}%>
+        <h3>La qualité de l’équipe pédagogique :</h3>
+        <svg viewBox="0 0 36 36" class="circle-svg">
+
+            <path class="around" stroke-dasharray="100, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"></path>
+
+            <path class="percent orange" stroke-dasharray="<%=Evaluation.getAverageEquipe(evaluations)%>, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"></path>
+
+            <text x="18" y="14" text-anchor="middle" dy="7" font-size="20"><%=Evaluation.getAverageEquipe(evaluations)%>%</text>
+
+        </svg>
+        <h3>Le temps consacrer aux activités liées au module :</h3>
+        <svg viewBox="0 0 36 36" class="circle-svg">
+
+            <path class="around" stroke-dasharray="100, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"></path>
+
+            <path class="percent green" stroke-dasharray="<%=Evaluation.getAverageHeure(evaluations)%>, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"></path>
+
+            <text x="18" y="14" text-anchor="middle" dy="7" font-size="20"><%=Evaluation.getAverageHeure(evaluations)%>%</text>
+
+        </svg>
+        <h1>Commentaires : </h1>
+        <% for(Evaluation evaluation : evaluations){%>
+            <p><%=evaluation.getCommentaire()%></p>
+        <%}
+        }
+        }%>
 
 
 

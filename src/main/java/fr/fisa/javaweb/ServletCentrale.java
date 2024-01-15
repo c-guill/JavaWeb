@@ -43,7 +43,7 @@ public class ServletCentrale extends HttpServlet {
         // Etudiant
         String[] prenoms = {
                 "Alice", "Charlie", "David", "Emma",
-                "Frank", "Grace", "Hank", "Ivy", "Jack",
+                "Frank", "Grace", "Hank", "Ivy",
                 "Kate", "Liam", "Mia", "Noah", "Olivia",
                 "Paul", "Quinn", "Ryan", "Sophia", "Tyler"
         };
@@ -60,9 +60,13 @@ public class ServletCentrale extends HttpServlet {
             listeEtudiants.add(etudiant);
             listeUser.add(etudiant);
         }
-        Etudiant etudiant = new Etudiant("jack","jack","1234",listeSpecialite.get(0),String.valueOf(1254));
+        Etudiant etudiant = new Etudiant("camille","camille","1234",listeSpecialite.get(0),String.valueOf(5678));
         listeEtudiants.add(etudiant);
         listeUser.add(etudiant);
+        etudiant = new Etudiant("jack","jack","1234",listeSpecialite.get(0),String.valueOf(1254));
+        listeEtudiants.add(etudiant);
+        listeUser.add(etudiant);
+
         etudiant.getEvaluations().put(listeSpecialite.get(0).getListeModule().get(0), new Evaluation(50,50,50,"ok"));
         etudiant.addNotes(new Tuple(listeModule.get(0),1),5);
         etudiant.addNotes(new Tuple(listeModule.get(1),1),6);
@@ -225,8 +229,9 @@ public class ServletCentrale extends HttpServlet {
                     if(module != null) {
                         for (Etudiant etudiant : this.listeEtudiants) {
                             for (Evaluation evaluation : etudiant.getEvaluations().values()){
-//                            if (etudiant.getEvaluations().containsKey(module)) {
-                                evaluations.add(evaluation);
+                                if (etudiant.getEvaluations().containsKey(module)) {
+                                    evaluations.add(evaluation);
+                                }
                             }
                         }
                     }

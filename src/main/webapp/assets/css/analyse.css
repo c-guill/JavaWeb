@@ -14,12 +14,25 @@
     font-size:10px
 }
 .circle-svg path.percent {
-    stroke: #6f6fff;
     fill: none;
     stroke-width: 2.8;
     stroke-linecap: round;
     animation: progress 1s ease-out forwards;
 }
+
+.purple{
+    stroke: #6f6fff;
+}
+
+.orange{
+    stroke:  #ffc86f;
+}
+
+.green{
+    stroke: #6fffa4;
+}
+
+
 .circle-svg path.around {
     stroke: #c4c4c4;
     fill: none;
