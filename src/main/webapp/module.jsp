@@ -22,51 +22,66 @@
     <section id="breadcrumbs" class="breadcrumbs">
         <div class="container">
             <br>
-            <h2>Note étudiants</h2>
+            <h2>Notes étudiants par module</h2>
 
         </div>
     </section><!-- End Breadcrumbs -->
 
     <section class="inner-page">
-        <h1>Sélectionnez un module :</h1>
-
-        <form class="row g-3 " method="post" novalidate>
-            <select name="module" class="form-select" >
-                <% ArrayList<Module> modules = (ArrayList<Module>) session.getAttribute("module");
-                    if(modules != null){
-                        for( int i = 0 ; i <  modules.size(); i++){
-                            Module module =modules.get(i);%>
-                <option value="<%=i%>"><%=module.getNom()%></option>
-                <% }
-                }%>
-            </select>
-            <button type="submit" formaction="home">Valider</button>
-        </form>
-
-        <%
-            ArrayList<HashMap> etudiantNotes = (ArrayList<HashMap>) session.getAttribute("ListeEtudiantNote");
-            ArrayList<Etudiant> etudiants = (ArrayList<Etudiant>) session.getAttribute("ListeEtudiantID");
-            if (etudiantNotes != null) {
-                for (HashMap<Integer, Float> etudiantNoteMap : etudiantNotes) {
-                    // Parcourir les entrées de la HashMap
-                    for (Map.Entry<Integer, Float> entry : etudiantNoteMap.entrySet()) {
-                        Integer numetu = entry.getKey();
-                        Float note = entry.getValue();
-
-
-
-        %>
-        <p> <%= etudiants.get(numetu).getName() %> <%= etudiants.get(numetu).getPrenom() %>               | Note : <%= note %> </p>
-        <%
-                }
-            }
-        } else {
-        %>
-        <p>Aucune spécialité trouvée dans la session.</p>
-        <%
-            }
-        %>
-
+        <div class="container">
+            <h5><i>Sélectionnez un module :</i></h5>
+            <form class="row g-3 form-supply" method="post" novalidate>
+                <div class="supply-select-button">
+                    <select name="module" class="form-select" >
+                        <% ArrayList<Module> modules = (ArrayList<Module>) session.getAttribute("module");
+                            if(modules != null) {
+                                for( int i = 0 ; i <  modules.size(); i++){
+                                    Module module =modules.get(i);%>
+                                    <option value="<%=i%>"><%=module.getNom()%></option>
+                                <%}
+                            }
+                        %>
+                    </select>
+                    <button class="btn btn-primary" type="submit" formaction="home">Valider</button>
+                </div>
+            </form>
+            <h2><%String module = (String)session.getAttribute("ModuleToGet");%><%=module%></h2>
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">INE</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Prénom</th>
+                    <th scope="col">Spécialité</th>
+                    <th scope="col">Notes</th>
+                </tr>
+                </thead>
+                <tbody>
+                <%
+                    ArrayList<HashMap> etudiantNotes = (ArrayList<HashMap>) session.getAttribute("ListeEtudiantNote");
+                    ArrayList<Etudiant> etudiants = (ArrayList<Etudiant>) session.getAttribute("ListeEtudiantID");
+                    if (etudiantNotes != null) {
+                        for (HashMap<Integer, Float> etudiantNoteMap : etudiantNotes) {
+                            // Parcourir les entrées de la HashMap
+                            for (Map.Entry<Integer, Float> entry : etudiantNoteMap.entrySet()) {
+                                Integer numetu = entry.getKey();
+                                Float note = entry.getValue();%>
+                                <tr>
+                                    <td><%=etudiants.get( numetu).getINE()%></td>
+                                    <td><%= etudiants.get(numetu).getName()%></td>
+                                    <td><%= etudiants.get(numetu).getPrenom()%></td>
+                                    <td><%= etudiants.get(numetu).getSpecialite().getNom()%></td>
+                                    <td><%= note %></td>
+                                </tr>
+                            <%}
+                        }
+                    } else {%>
+                        <p>Aucune spécialité trouvée dans la session.</p>
+                    <%}
+                %>
+                </tbody>
+            </table>
+        </div>
     </section>
 </main><!-- End #main -->
 <%@include file="footer.jsp"%>

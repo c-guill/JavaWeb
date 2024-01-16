@@ -1,8 +1,8 @@
-<%@ page import="fr.fisa.javaweb.beans.Specialite" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="fr.fisa.javaweb.beans.Module" %>
 <%@ page import="java.util.HashSet" %>
 <%@ page import="java.util.Set" %>
+<%@ page import="fr.fisa.javaweb.beans.*" %>
+<%@ page import="fr.fisa.javaweb.beans.Module" %>
 <%@include file="header.jsp"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
@@ -37,22 +37,25 @@
                         <label for="modules">Sélectionner un module:</label>
                         <select name="modules" id="modules" class="form-select">
                             <%
-                                Set<String> uniqueModules = new HashSet<>(); // Using a set to store unique module names
-                                ArrayList<Specialite> specialites = (ArrayList<Specialite>) session.getAttribute("specialite");
+                                User user = (User) session.getAttribute("user");
+                                if (user instanceof Administrateur) {
+                                    Set<String> uniqueModules = new HashSet<>(); // Using a set to store unique module names
+                                    ArrayList<Specialite> specialites = (ArrayList<Specialite>) session.getAttribute("specialite");
 
-                                if (specialites != null) {
-                                    for (Specialite specialite : specialites) {
-                                        if (specialite.getListeModule() != null) {
-                                            for (Module module : specialite.getListeModule()) {
-                                                uniqueModules.add(module.getNom()); // Adding module name to the set
+                                    if (specialites != null) {
+                                        for (Specialite specialite : specialites) {
+                                            if (specialite.getListeModule() != null) {
+                                                for (Module module : specialite.getListeModule()) {
+                                                    uniqueModules.add(module.getNom()); // Adding module name to the set
+                                                }
                                             }
                                         }
                                     }
-                                }
 
-                                for (String moduleName : uniqueModules) { %>
-                                    <option value="<%= moduleName %>"><%= moduleName %></option>
-                                <% }
+                                    for (String moduleName : uniqueModules) { %>
+                                        <option value="<%= moduleName %>"><%= moduleName %></option>
+                                    <% }
+                                }
                             %>
                         </select>
                     </div>
@@ -65,7 +68,13 @@
                         <input type="number" class="form-control" id="notes" name="notes" step="0.01" placeholder="0.00" required>
                     </div>
                     <div class="d-flex justify-content-center">
-                        <button class="btn btn-primary" type="submit" formaction="home">Entrer notes d'étudiant</button>
+                        <%
+                            if (user instanceof Etudiant) {%>
+                                <button class="btn btn-primary" type="submit">Aucun droit</button>
+                            <%} else {%>
+                                <button class="btn btn-primary" type="submit" formaction="home">Entrer notes d'étudiant</button>
+                            <%}
+                        %>
                     </div>
                 </form>
             </div>

@@ -146,11 +146,12 @@ public class ServletCentrale extends HttpServlet {
                     }
                     if(specialite != null) {
                         Etudiant etudiant = new Etudiant(request.getParameter("nom"),
-                                request.getParameter("prenom"),
-                                request.getParameter("INE"),
-                                this.listeSpecialite.get(0),
-                                request.getParameter("password"));
+                                                        request.getParameter("prenom"),
+                                                        request.getParameter("password"),
+                                                        specialite,
+                                                        request.getParameter("INE"));
                         this.listeEtudiants.add(etudiant);
+                        this.listeUser.add(etudiant);
                     }
                 }
                 response.sendRedirect("index.jsp");
@@ -173,11 +174,13 @@ public class ServletCentrale extends HttpServlet {
                 for (int i=0; i<listeEtudiants.size();i++){
                     for (int j=0; j<listeEtudiants.get(i).getSpecialite().getListeModule().size(); j++){
                         if (listeEtudiants.get(i).getSpecialite().getListeModule().get(j).getNom().equals(module.getNom())){
-                            HashMap notes = new HashMap<>();
                             for (Map.Entry<Tuple, Float> entry : listeEtudiants.get(i).getNotes().entrySet()) {
                                 Tuple cle = entry.getKey();
-                                if (cle.getModule().getNom().equals(module.getNom())){
+                                //System.out.println("Etu: " + listeEtudiants.get(i).getName() + " - Module: " + cle.getModule().getNom() + ", notes: " + points);
+                                if (cle.getModule().getNom().equals(module.getNom())) {
                                     Float valeur = entry.getValue();
+                                    //System.out.println(" --> value after check: " + valeur);
+                                    HashMap<Integer, Float> notes = new HashMap<>();
                                     notes.put(i,valeur);
                                     etudiantNote.add(notes);
                                 }
@@ -188,6 +191,7 @@ public class ServletCentrale extends HttpServlet {
                 response.sendRedirect("module.jsp");
                 request.getSession().setAttribute("ListeEtudiantNote",etudiantNote);
                 request.getSession().setAttribute("ListeEtudiantID",this.listeEtudiants);
+                request.getSession().setAttribute("ModuleToGet", module.getNom());
                 break;
             case "notes.jsp":
                 Module module2 = listeModule.get(Integer.parseInt(request.getParameter("module")));
@@ -278,28 +282,26 @@ public class ServletCentrale extends HttpServlet {
                 // Redirect to studentNotes.jsp
                 String nomEtu = request.getParameter("nom-etu");
                 String INE = request.getParameter("INE");
-                System.out.println(request.getParameter("modules"));
                 String mod = request.getParameter("modules");
                 int semestre = Integer.parseInt(request.getParameter("semester"));
                 float notes = Float.parseFloat(request.getParameter("notes"));
 
                 for (Etudiant etu : listeEtudiants) {
                     if (nomEtu.equals(etu.getName()) && INE.equals(etu.getINE())) {
-                        /*System.out.println("<h1>All notes of etudiant " + etu.getName()+"</h1>");
-                        for (Map.Entry<Tuple, Float> entry : etu.getNotes().entrySet()) {
-                            Tuple key = entry.getKey();
-                            float value = entry.getValue();
-                            System.out.println("<p>Module: " + key.getModule().getNom() + ", Semestre: " + key.getSemestre() + ", Notes: " + value);
-                        }*/
-                        Tuple key = new Tuple(new Module(mod), semestre);
-                        etu.addNotes(key, notes);
+                        // search module in the user's list of modules
+                        for (Module m : etu.getSpecialite().getListeModule()) {
+                            if (m.getNom().equals(mod)) {
+                                Tuple key = new Tuple(m, semestre);
+                                etu.addNotes(key, notes);
+                            }
+                        }
                     }
 
-                    //System.out.println("All notes of etudiant " + etu.getName() + " after add new notes: ");
+                    System.out.println("All notes of etudiant " + etu.getName() + " after add new notes: ");
                     for (Map.Entry<Tuple, Float> entry : etu.getNotes().entrySet()) {
                         Tuple key = entry.getKey();
                         float value = entry.getValue();
-                        //System.out.println("Module: " + key.getModule().getNom() + ", Semestre: " + key.getSemestre() + ", Notes: " + value + "</p>");
+                        System.out.println("Module: " + key.getModule().getNom() + ", Semestre: " + key.getSemestre() + ", Notes: " + value);
                     }
                 }
                 response.sendRedirect("studentNotes.jsp");
@@ -318,8 +320,8 @@ public class ServletCentrale extends HttpServlet {
                 if (authentificatedUser != null) {
                     response.sendRedirect("homepage.jsp");
                     request.getSession().setAttribute("module",this.listeModule);
-                    if(authentificatedUser instanceof Administrateur){
-                        request.getSession().setAttribute("specialite",this.listeSpecialite);
+                    if (authentificatedUser instanceof Administrateur){
+                        request.getSession().setAttribute("specialite", this.listeSpecialite);
                     }
                     request.getSession().setAttribute("user",authentificatedUser);
                 } else {

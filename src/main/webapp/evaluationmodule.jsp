@@ -1,6 +1,5 @@
-<%@ page import="fr.fisa.javaweb.beans.User" %>
-<%@ page import="fr.fisa.javaweb.beans.Etudiant" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="fr.fisa.javaweb.beans.*" %>
 <%@ page import="fr.fisa.javaweb.beans.Module" %><%--
   Created by IntelliJ IDEA.
   User: w136761
@@ -20,7 +19,7 @@
     <section id="breadcrumbs" class="breadcrumbs">
         <div class="container">
             <br>
-            <h2>Notation de module</h2>
+            <h2>Evaluation les modules</h2>
 
         </div>
     </section><!-- End Breadcrumbs -->
@@ -30,23 +29,23 @@
             <div class=" col-md-4 flex-column justify-content-center">
                 <img src="assets/img/student.png" class="col-12 d-flex justify-content-center">
                 <form class="row g-3 " method="post" novalidate>
-                    <label for="module" class="form-label">Choississez le module à évaluer</label>
-                    <select id="module" name="module" class="form-select" >
-                        <% User user = (User) session.getAttribute("user");
-                            if(user instanceof Etudiant){
-                                Etudiant etudiant = (Etudiant) user;
-                                ArrayList<Module> modules = etudiant.getSpecialite().getListeModule();
-                                for (Module module : modules){
-                                    if(!etudiant.getEvaluations().containsKey(module)){ %>
-                        <option value="<%=module.getNom()%>"><%=module.getNom()%></option>
+                    <div class="">
+                        <label for="module" class="form-label">Choississez le module à évaluer</label>
+                        <select id="module" name="module" class="form-select" >
+                            <% User user = (User) session.getAttribute("user");
+                                if(user instanceof Etudiant){
+                                    Etudiant etudiant = (Etudiant) user;
+                                    ArrayList<Module> modules = etudiant.getSpecialite().getListeModule();
+                                    for (Module module : modules){
+                                        if(!etudiant.getEvaluations().containsKey(module)){ %>
+                                            <option value="<%=module.getNom()%>"><%=module.getNom()%></option>
+                                        <%}
+                                    }
 
-
-                        <%}
                                 }
-
-                            }
-                        %>
-                    </select>
+                            %>
+                        </select>
+                    </div>
                     <div class="">
                         <label for="supports" class="form-label">Qualité des supports pédagiques (/100)</label>
                         <input type="number" name="supports" id="supports" class="form-control" />
@@ -67,7 +66,13 @@
                         <textarea class="form-control" name="commentaire" id="commentaire" rows="3"></textarea>
                     </div>
                     <div class="d-flex justify-content-center">
-                        <input class="btn btn-primary" type="submit" formaction="home" value="Ajouter évaluation">
+                        <%  user = (User) session.getAttribute("user");
+                            if (user instanceof Administrateur) {%>
+                                <button class="btn btn-primary" type="submit" >Aucun droit</button>
+                            <%} else {%>
+                                <button class="btn btn-primary" type="submit" formaction="home">Ajouter évaluation</button>
+                            <%}
+                        %>
                     </div>
                 </form>
             </div>

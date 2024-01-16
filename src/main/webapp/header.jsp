@@ -1,4 +1,4 @@
-<%--
+<%@ page import="fr.fisa.javaweb.beans.User" %><%--
   Created by IntelliJ IDEA.
   User: w136761
   Date: 11/01/2024
@@ -51,12 +51,18 @@
                 <li><a class="nav-link scrollto " href="homepage.jsp">Accueil</a></li>
                 <li><a class="nav-link scrollto" href="studentNotes.jsp">Notes</a></li>
                 <li><a class="nav-link scrollto" href="inscription.jsp">Inscriptions</a></li>
-                <li><a class="nav-link   scrollto" href="module.jsp">Module</a></li>
+                <li><a class="nav-link scrollto" href="module.jsp">Module</a></li>
                 <li><a class="nav-link scrollto" href="specialite.jsp">Specialite</a></li>
                 <li><a class="nav-link scrollto" href="analyse.jsp">Analyse</a></li>
                 <li><a class="nav-link scrollto" href="notes.jsp">Notes Module</a></li>
                 <li><a class="nav-link scrollto" href="evaluationmodule.jsp">Evaluation module</a></li>
-                <li><a class="getstarted scrollto" href="index.jsp">Login</a></li>
+                <% User authentification = (User) session.getAttribute("user");
+                    if (authentification != null) {%>
+                        <li><a class="getstarted scrollto" href="#!"><%= authentification.getName() %></a></li>
+                    <%} else {%>
+                        <li><a class="getstarted scrollto" href="index.jsp">Login</a></li>
+                    <%}
+                %>
             </ul>
             <i class="bi bi-list mobile-nav-toggle"></i>
         </nav><!-- .navbar -->

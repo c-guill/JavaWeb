@@ -21,71 +21,70 @@
     <section id="breadcrumbs" class="breadcrumbs">
         <div class="container">
             <br>
-            <h2>Inscription d'étudiant</h2>
+            <h2>Analyse les notes d'un étudiant</h2>
 
         </div>
     </section><!-- End Breadcrumbs -->
 
     <section class="inner-page">
-        <h1>Sélectionnez une option :</h1>
+        <div class="container">
+            <h5><i>Sélectionnez une option :</i></h5>
+            <form class="row g-3 form-supply" method="post" novalidate>
+                <div class="supply-select-button">
+                    <select name="module" class="form-select" >
+                        <% ArrayList<Module> modules = (ArrayList<Module>) session.getAttribute("module");
+                            if(modules != null){
+                                for(Module module : modules){%>
+                                    <option value="<%=module.getNom()%>"><%=module.getNom()%></option>
+                                <%}
+                            }
+                        %>
+                    </select>
+                    <button type="submit" formaction="home">Valider</button>
+                </div>
+            </form>
 
-        <form class="row g-3 " method="post" novalidate>
-            <select name="module" class="form-select" >
-                <% ArrayList<Module> modules = (ArrayList<Module>) session.getAttribute("module");
-                    if(modules != null){
-                        for(Module module : modules){%>
-                <option value="<%=module.getNom()%>"><%=module.getNom()%></option>
-                <% }
-                }%>
-            </select>
+            <%ArrayList<Evaluation> evaluations = (ArrayList<Evaluation>) session.getAttribute("evaluations");%>
+            <% if(evaluations != null){%>
+            <h3>Nombre d'évaluation : <%=evaluations.size()%></h3>
+            <% if(!evaluations.isEmpty()){%>
+            <h3>La qualité des supports pédagogiques :</h3>
+            <svg viewBox="0 0 36 36" class="circle-svg">
 
+                <path class="around" stroke-dasharray="100, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"></path>
 
-            <button type="submit" formaction="home">Valider</button>
-        </form>
+                <path class="percent purple" stroke-dasharray="<%=Evaluation.getAverageSupport(evaluations)%>, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"></path>
 
-        <%ArrayList<Evaluation> evaluations = (ArrayList<Evaluation>) session.getAttribute("evaluations");%>
-      <% if(evaluations != null){%>
-        <h1>Nombre d'évaluation : <%=evaluations.size()%></h1>
-        <% if(!evaluations.isEmpty()){%>
-        <h3>La qualité des supports pédagogiques :</h3>
-        <svg viewBox="0 0 36 36" class="circle-svg">
+                <text x="18" y="14" text-anchor="middle" dy="7" font-size="20"><%=Evaluation.getAverageSupport(evaluations)%>%</text>
 
-            <path class="around" stroke-dasharray="100, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"></path>
+            </svg>
+            <h3>La qualité de l’équipe pédagogique :</h3>
+            <svg viewBox="0 0 36 36" class="circle-svg">
 
-            <path class="percent purple" stroke-dasharray="<%=Evaluation.getAverageSupport(evaluations)%>, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"></path>
+                <path class="around" stroke-dasharray="100, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"></path>
 
-            <text x="18" y="14" text-anchor="middle" dy="7" font-size="20"><%=Evaluation.getAverageSupport(evaluations)%>%</text>
+                <path class="percent orange" stroke-dasharray="<%=Evaluation.getAverageEquipe(evaluations)%>, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"></path>
 
-        </svg>
-        <h3>La qualité de l’équipe pédagogique :</h3>
-        <svg viewBox="0 0 36 36" class="circle-svg">
+                <text x="18" y="14" text-anchor="middle" dy="7" font-size="20"><%=Evaluation.getAverageEquipe(evaluations)%>%</text>
 
-            <path class="around" stroke-dasharray="100, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"></path>
+            </svg>
+            <h3>Le temps consacrer aux activités liées au module :</h3>
+            <svg viewBox="0 0 36 36" class="circle-svg">
 
-            <path class="percent orange" stroke-dasharray="<%=Evaluation.getAverageEquipe(evaluations)%>, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"></path>
+                <path class="around" stroke-dasharray="100, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"></path>
 
-            <text x="18" y="14" text-anchor="middle" dy="7" font-size="20"><%=Evaluation.getAverageEquipe(evaluations)%>%</text>
+                <path class="percent green" stroke-dasharray="<%=Evaluation.getAverageHeure(evaluations)%>, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"></path>
 
-        </svg>
-        <h3>Le temps consacrer aux activités liées au module :</h3>
-        <svg viewBox="0 0 36 36" class="circle-svg">
+                <text x="18" y="14" text-anchor="middle" dy="7" font-size="20"><%=Evaluation.getAverageHeure(evaluations)%>%</text>
 
-            <path class="around" stroke-dasharray="100, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"></path>
-
-            <path class="percent green" stroke-dasharray="<%=Evaluation.getAverageHeure(evaluations)%>, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"></path>
-
-            <text x="18" y="14" text-anchor="middle" dy="7" font-size="20"><%=Evaluation.getAverageHeure(evaluations)%>%</text>
-
-        </svg>
-        <h1>Commentaires : </h1>
-        <% for(Evaluation evaluation : evaluations){%>
-            <p><%=evaluation.getCommentaire()%></p>
-        <%}
-        }
-        }%>
-
-
-
+            </svg>
+            <h1>Commentaires : </h1>
+            <% for(Evaluation evaluation : evaluations){%>
+                <p><%=evaluation.getCommentaire()%></p>
+            <%}
+            }
+            }%>
+        </div>
     </section>
 </main><!-- End #main -->
 <%@include file="footer.jsp"%>

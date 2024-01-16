@@ -1,5 +1,5 @@
-<%@ page import="fr.fisa.javaweb.beans.Specialite" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="fr.fisa.javaweb.beans.*" %>
 <%@include file="header.jsp"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
@@ -38,16 +38,29 @@
                         <label for="password" class="form-label">Password</label>
                         <input type="password" class="form-control" name="password" id="password" required>
                     </div>
-                    <select name="specialite" class="form-select" >
-                        <% ArrayList<Specialite> specialites = (ArrayList<Specialite>) session.getAttribute("specialite");
-                            if(specialites != null){
-                            for(Specialite specialite : specialites){%>
-                        <option value="<%=specialite.getNom()%>"><%=specialite.getNom()%></option>
-                        <% }
-                        }%>
-                    </select>
+                    <div class="">
+                        <label for="specialite" class="form-label">Choississez la spécialité à inscrire</label>
+                        <select id="specialite" name="specialite" class="form-select" >
+                            <% User user = (User) session.getAttribute("user");
+                                if (user instanceof Administrateur) {
+                                    ArrayList<Specialite> specialites = (ArrayList<Specialite>) session.getAttribute("specialite");
+                                    if(specialites != null){
+                                        for(Specialite specialite : specialites){%>
+                                            <option value="<%=specialite.getNom()%>"><%=specialite.getNom()%></option>
+                                        <%}
+                                    }
+                                }
+                            %>
+                        </select>
+                    </div>
                     <div class="d-flex justify-content-center">
-                        <input class="btn btn-primary" type="submit" formaction="home" value="Inscrire étudiant">
+                        <%  user = (User) session.getAttribute("user");
+                            if (user instanceof Etudiant) {%>
+                                <button class="btn btn-primary" type="submit" >Aucun droit</button>
+                            <%} else {%>
+                                <button class="btn btn-primary" type="submit" formaction="home">Inscrire étudiant</button>
+                            <%}
+                        %>
                     </div>
                 </form>
             </div>
